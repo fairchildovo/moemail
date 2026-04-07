@@ -88,12 +88,12 @@ export async function generateMetadata({
       canonical: `${baseUrl}/${locale}`,
       languages,
     },
-    manifest: '/manifest.json?v=4',
+    manifest: '/manifest.json?v=5',
     icons: [
-      { rel: "icon", type: "image/svg+xml", url: "/icons/favicon-light.svg?v=4", media: "(prefers-color-scheme: light)" },
-      { rel: "icon", type: "image/svg+xml", url: "/icons/favicon-dark.svg?v=4", media: "(prefers-color-scheme: dark)" },
-      { rel: "icon", url: "/favicon.ico?v=4" },
-      { rel: "apple-touch-icon", url: "/icons/icon-192x192-v3.png?v=4" },
+      { rel: "icon", type: "image/svg+xml", url: "/icons/favicon-light.svg?v=5", media: "(prefers-color-scheme: light)" },
+      { rel: "icon", type: "image/svg+xml", url: "/icons/favicon-dark.svg?v=5", media: "(prefers-color-scheme: dark)" },
+      { rel: "icon", url: "/favicon.ico?v=5" },
+      { rel: "apple-touch-icon", url: "/icons/icon-192x192-v3.png?v=5" },
     ],
   }
 }

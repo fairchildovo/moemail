@@ -22,8 +22,12 @@ export default async function LoginPage({
   const turnstile = await getTurnstileConfig()
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <LoginForm turnstile={{ enabled: turnstile.enabled, siteKey: turnstile.siteKey }} />
+    <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(120%_90%_at_50%_0%,hsl(var(--primary)/0.12)_0%,hsl(var(--muted)/0.36)_42%,hsl(var(--background))_74%)]" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,hsl(var(--background)/0.42)_0%,hsl(var(--background))_100%)]" />
+      <div className="relative z-10">
+        <LoginForm turnstile={{ enabled: turnstile.enabled, siteKey: turnstile.siteKey }} />
+      </div>
     </div>
   )
 }

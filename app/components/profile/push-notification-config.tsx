@@ -165,8 +165,8 @@ export function PushNotificationConfig() {
 
       await registration.showNotification("TianMail", {
         body: t("testTemplateBody"),
-        icon: "/icons/icon-192x192-v3.png",
-        badge: "/icons/icon-192x192-v3.png",
+        icon: "/icons/icon-192x192-notify.png",
+        badge: "/icons/icon-192x192-notify.png",
         tag: `test-${Date.now()}`,
         data: { url: `/${locale}/moe` },
       })

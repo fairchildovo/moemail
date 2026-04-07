@@ -25,8 +25,10 @@ export default async function MoePage({
   const hasPermission = await checkPermission(PERMISSIONS.MANAGE_EMAIL)
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 h-screen">
-      <div className="container mx-auto h-full px-4 lg:px-8 max-w-[1600px]">
+    <div className="bg-background h-screen relative overflow-hidden">
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(120%_90%_at_50%_0%,hsl(var(--primary)/0.12)_0%,hsl(var(--muted)/0.36)_42%,hsl(var(--background))_74%)]" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,hsl(var(--background)/0.42)_0%,hsl(var(--background))_100%)]" />
+      <div className="container mx-auto h-full px-4 lg:px-8 max-w-[1600px] relative z-10">
         <Header />
         <main className="h-full">
           <ThreeColumnLayout />
