@@ -45,8 +45,8 @@ self.addEventListener("push", (event) => {
   event.waitUntil(
     getPayload().then((payload) => self.registration.showNotification(payload.title, {
       body: payload.body,
-      icon: "/icons/icon-192x192.png",
-      badge: "/icons/icon-192x192.png",
+      icon: "/icons/icon-192x192-v3.png",
+      badge: "/icons/icon-192x192-v3.png",
       tag: payload.messageId || "new-email",
       data: {
         url: payload.url,

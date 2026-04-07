@@ -14,7 +14,10 @@ import { Providers } from "../providers"
 export const runtime = "edge"
 
 export const viewport: Viewport = {
-  themeColor: '#000000',
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0b0b" },
+  ],
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -85,10 +88,12 @@ export async function generateMetadata({
       canonical: `${baseUrl}/${locale}`,
       languages,
     },
-    manifest: '/manifest.json?v=2',
+    manifest: '/manifest.json?v=4',
     icons: [
-      { rel: 'icon', url: '/favicon.ico?v=2' },
-      { rel: 'apple-touch-icon', url: '/icons/icon-192x192.png?v=2' },
+      { rel: "icon", type: "image/svg+xml", url: "/icons/favicon-light.svg?v=4", media: "(prefers-color-scheme: light)" },
+      { rel: "icon", type: "image/svg+xml", url: "/icons/favicon-dark.svg?v=4", media: "(prefers-color-scheme: dark)" },
+      { rel: "icon", url: "/favicon.ico?v=4" },
+      { rel: "apple-touch-icon", url: "/icons/icon-192x192-v3.png?v=4" },
     ],
   }
 }
