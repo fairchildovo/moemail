@@ -270,3 +270,15 @@ Proxy environment variables detected. We'll use your proxy for fetch requests.
  GET /zh-CN 200 in 878ms
  ✓ Compiled in 1711ms (2395 modules)
  GET /zh-CN 200 in 610ms
+ GET /zh-CN 200 in 341ms
+ GET /favicon.ico 200 in 26ms
+ ○ Compiling /api/auth/[...auth] ...
+ ✓ Compiled /api/auth/[...auth] in 1027ms (1831 modules)
+ GET /api/auth/session 500 in 1386ms
+ GET /api/auth/session 500 in 13ms
+ GET /sw.js 404 in 633ms
+ GET /zh-CN 200 in 199ms
+ GET /favicon.ico 200 in 21ms
+ GET /api/auth/session 500 in 16ms
+ GET /api/auth/session 500 in 25ms
+ GET /sw.js 404 in 45ms
