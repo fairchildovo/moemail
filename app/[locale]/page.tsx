@@ -19,11 +19,12 @@ export default async function Home({
   const t = await getTranslations({ locale, namespace: "home" })
 
   return (
-    <div className="bg-gradient-to-b from-background to-muted/45 min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 lg:px-8 max-w-[1600px]">
         <Header />
         <main className="pt-16">
           <div className="h-[calc(100vh-4rem)] flex flex-col items-center justify-center text-center px-2 relative overflow-hidden">
+            <div className="absolute inset-0 -z-20 bg-[radial-gradient(120%_80%_at_50%_0%,hsl(var(--muted)/0.5)_0%,hsl(var(--background))_60%)]" />
             <div className="absolute inset-0 -z-10 bg-grid-primary/5" />
 
             <div className="w-full max-w-3xl mx-auto space-y-6 sm:space-y-8 py-4">

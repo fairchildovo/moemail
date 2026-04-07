@@ -57,7 +57,7 @@ export function Logo() {
           </svg>
         </div>
       </div>
-      <span className="font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-primary to-black">
+      <span className="font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-primary to-foreground dark:bg-none dark:text-foreground">
         TianMail
       </span>
     </Link>

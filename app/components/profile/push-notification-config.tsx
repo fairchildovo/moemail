@@ -164,7 +164,18 @@ export function PushNotificationConfig() {
       const res = await fetch("/api/push-subscriptions/test", {
         method: "POST",
       })
-      const data = await res.json() as PushTestResponse
+      const raw = await res.text()
+      let data: PushTestResponse | null = null
+      try {
+        data = JSON.parse(raw) as PushTestResponse
+      } catch {
+        data = null
+      }
+
+      if (!data) {
+        throw new Error(`HTTP ${res.status}: ${raw.slice(0, 120)}`)
+      }
+
       if (!res.ok || data.success < 1) {
         const reason = data.error || data.reasons?.[0] || t("testFailedDesc")
         throw new Error(reason)
