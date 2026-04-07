@@ -92,6 +92,28 @@ export const webhooks = sqliteTable('webhook', {
   userIdIdx: index('webhook_user_id_idx').on(table.userId),
 }))
 
+export const pushSubscriptions = sqliteTable("push_subscription", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  endpoint: text("endpoint").notNull(),
+  subscription: text("subscription").notNull(),
+  enabled: integer("enabled", { mode: "boolean" }).notNull().default(true),
+  createdAt: integer("created_at", { mode: "timestamp_ms" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  lastSuccessAt: integer("last_success_at", { mode: "timestamp_ms" }),
+  lastFailureAt: integer("last_failure_at", { mode: "timestamp_ms" }),
+  lastError: text("last_error"),
+}, (table) => ({
+  userIdIdx: index("push_subscription_user_id_idx").on(table.userId),
+  endpointIdx: uniqueIndex("push_subscription_endpoint_unique").on(table.endpoint),
+}))
+
 export const roles = sqliteTable("role", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   name: text("name").notNull(),

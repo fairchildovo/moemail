@@ -838,3 +838,4 @@
 [TypeError: controller[kState].transformAlgorithm is not a function]
  ⨯ unhandledRejection: [TypeError: controller[kState].transformAlgorithm is not a function]
  ⨯ unhandledRejection:  [TypeError: controller[kState].transformAlgorithm is not a function]
+^C

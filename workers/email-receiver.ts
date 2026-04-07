@@ -1,13 +1,14 @@
 import { Env } from '../types'
 import { drizzle } from 'drizzle-orm/d1'
-import { messages, emails, webhooks } from '../app/lib/schema'
-import { eq, sql } from 'drizzle-orm'
+import { messages, emails, pushSubscriptions, webhooks } from '../app/lib/schema'
+import { and, eq, sql } from 'drizzle-orm'
 import PostalMime from 'postal-mime'
 import { WEBHOOK_CONFIG } from '../app/config/webhook'
 import { EmailMessage } from '../app/lib/webhook'
+import { readVapidConfig, sendWebPushNotification, StoredPushSubscription } from '../app/lib/push'
 
 const handleEmail = async (message: ForwardableEmailMessage, env: Env) => {
-  const db = drizzle(env.DB, { schema: { messages, emails, webhooks } })
+  const db = drizzle(env.DB, { schema: { messages, emails, webhooks, pushSubscriptions } })
 
   const parsedMessage = await PostalMime.parse(message.raw)
 
@@ -57,6 +58,54 @@ const handleEmail = async (message: ForwardableEmailMessage, env: Env) => {
         })
       } catch (error) {
         console.error('Failed to send webhook:', error)
+      }
+    }
+
+    const vapid = readVapidConfig(env)
+    if (vapid && targetEmail.userId) {
+      const subscriptions = await db.query.pushSubscriptions.findMany({
+        where: and(
+          eq(pushSubscriptions.userId, targetEmail.userId),
+          eq(pushSubscriptions.enabled, true),
+        ),
+      })
+
+      const now = new Date()
+      for (const item of subscriptions) {
+        let subscription: StoredPushSubscription
+        try {
+          subscription = JSON.parse(item.subscription) as StoredPushSubscription
+        } catch {
+          await db.update(pushSubscriptions)
+            .set({
+              enabled: false,
+              updatedAt: now,
+              lastFailureAt: now,
+              lastError: 'Invalid subscription JSON',
+            })
+            .where(eq(pushSubscriptions.id, item.id))
+          continue
+        }
+
+        const pushResult = await sendWebPushNotification(subscription, vapid)
+        if (pushResult.ok) {
+          await db.update(pushSubscriptions)
+            .set({
+              updatedAt: now,
+              lastSuccessAt: now,
+              lastError: null,
+            })
+            .where(eq(pushSubscriptions.id, item.id))
+        } else {
+          await db.update(pushSubscriptions)
+            .set({
+              enabled: !pushResult.shouldDelete,
+              updatedAt: now,
+              lastFailureAt: now,
+              lastError: pushResult.error ?? `Push failed${pushResult.status ? ` (${pushResult.status})` : ''}`,
+            })
+            .where(eq(pushSubscriptions.id, item.id))
+        }
       }
     }
 

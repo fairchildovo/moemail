@@ -17,5 +17,10 @@
       "binding": "SITE_CONFIG",
       "id": "${KV_NAMESPACE_ID}"
     }
-  ]
+  ],
+  "vars": {
+    "WEB_PUSH_VAPID_SUBJECT": "mailto:admin@example.com",
+    "WEB_PUSH_VAPID_PUBLIC_KEY": "",
+    "WEB_PUSH_VAPID_PRIVATE_JWK": ""
+  }
 }

@@ -5,6 +5,9 @@ declare global {
   interface CloudflareEnv {
     DB: D1Database;
     SITE_CONFIG: KVNamespace;
+    WEB_PUSH_VAPID_SUBJECT?: string;
+    WEB_PUSH_VAPID_PUBLIC_KEY?: string;
+    WEB_PUSH_VAPID_PRIVATE_JWK?: string;
   }
 
   interface Window {

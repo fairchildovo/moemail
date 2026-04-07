@@ -5,7 +5,7 @@ import { useTranslations, useLocale } from "next-intl"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { signOut } from "next-auth/react"
-import { Github, Settings, Crown, Sword, User2, Gem, Mail } from "lucide-react"
+import { Github, Settings, Crown, Sword, User2, Gem, Mail, Bell } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { WebhookConfig } from "./webhook-config"
 import { PromotePanel } from "./promote-panel"
@@ -14,6 +14,7 @@ import { useRolePermission } from "@/hooks/use-role-permission"
 import { PERMISSIONS } from "@/lib/permissions"
 import { WebsiteConfigPanel } from "./website-config-panel"
 import { ApiKeyPanel } from "./api-key-panel"
+import { PushNotificationConfig } from "./push-notification-config"
 
 interface ProfileCardProps {
   user: User
@@ -62,6 +63,7 @@ export function ProfileCard({ user }: ProfileCardProps) {
   const t = useTranslations("profile.card")
   const tAuth = useTranslations("auth.signButton")
   const tWebhook = useTranslations("profile.webhook")
+  const tPush = useTranslations("profile.push")
   const tNav = useTranslations("common.nav")
   const locale = useLocale()
   const router = useRouter()
@@ -133,6 +135,14 @@ export function ProfileCard({ user }: ProfileCardProps) {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="bg-background rounded-lg border-2 border-primary/20 p-6">
+        <div className="flex items-center gap-2 mb-6">
+          <Bell className="w-5 h-5 text-primary" />
+          <h2 className="text-lg font-semibold">{tPush("panelTitle")}</h2>
+        </div>
+        <PushNotificationConfig />
       </div>
 
       {canManageWebhook && (
