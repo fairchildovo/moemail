@@ -52,7 +52,7 @@ export function FloatMenu() {
               asChild
               variant="outline"
               size="icon"
-              className="bg-white dark:bg-background rounded-full shadow-lg group relative border-primary/20"
+              className="bg-card/95 backdrop-blur rounded-full shadow-lg group relative border-primary/20"
             >
               <a
                 href={`mailto:${emailAddress}`}

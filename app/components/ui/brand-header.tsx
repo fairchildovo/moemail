@@ -77,17 +77,17 @@ export function BrandHeader({
               </svg>
             </div>
           </div>
-          <span className="text-3xl font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-primary to-black">
+          <span className="text-3xl font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-primary to-foreground">
             TianMail
           </span>
         </Link>
       </div>
 
       <div className="space-y-3">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground">
           {displayTitle}
         </h1>
-        <p className="text-gray-600 dark:text-gray-300 max-w-md mx-auto">
+        <p className="text-muted-foreground max-w-md mx-auto">
           {displaySubtitle}
         </p>
       </div>

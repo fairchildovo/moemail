@@ -102,8 +102,8 @@ export function MessageView({ emailId, messageId, messageType = 'received' }: Me
                   padding: 0;
                   min-height: 100%;
                   font-family: system-ui, -apple-system, sans-serif;
-                  color: ${theme === 'dark' ? '#fff' : '#000'};
-                  background: ${theme === 'dark' ? '#1a1a1a' : '#fff'};
+                  color: ${theme === 'dark' ? '#f2f2f5' : '#111111'};
+                  background: ${theme === 'dark' ? '#11131a' : '#ffffff'};
                 }
                 body {
                   padding: 20px;
@@ -113,7 +113,7 @@ export function MessageView({ emailId, messageId, messageType = 'received' }: Me
                   height: auto;
                 }
                 a {
-                  color: #2563eb;
+                  color: ${theme === 'dark' ? '#93b4ff' : '#2563eb'};
                 }
                 /* 滚动条样式 */
                 ::-webkit-scrollbar {
@@ -125,22 +125,22 @@ export function MessageView({ emailId, messageId, messageType = 'received' }: Me
                 }
                 ::-webkit-scrollbar-thumb {
                   background: ${theme === 'dark'
-                    ? 'rgba(130, 109, 217, 0.3)'
-                    : 'rgba(130, 109, 217, 0.2)'};
+                    ? 'rgba(255, 255, 255, 0.24)'
+                    : 'rgba(17, 17, 17, 0.18)'};
                   border-radius: 9999px;
                   transition: background-color 0.2s;
                 }
                 ::-webkit-scrollbar-thumb:hover {
                   background: ${theme === 'dark'
-                    ? 'rgba(130, 109, 217, 0.5)'
-                    : 'rgba(130, 109, 217, 0.4)'};
+                    ? 'rgba(255, 255, 255, 0.38)'
+                    : 'rgba(17, 17, 17, 0.28)'};
                 }
                 /* Firefox 滚动条 */
                 * {
                   scrollbar-width: thin;
                   scrollbar-color: ${theme === 'dark'
-                    ? 'rgba(130, 109, 217, 0.3) transparent'
-                    : 'rgba(130, 109, 217, 0.2) transparent'};
+                    ? 'rgba(255, 255, 255, 0.24) transparent'
+                    : 'rgba(17, 17, 17, 0.18) transparent'};
                 }
               </style>
             </head>
@@ -186,7 +186,7 @@ export function MessageView({ emailId, messageId, messageType = 'received' }: Me
     return (
       <div className="flex items-center justify-center h-32">
         <Loader2 className="w-5 h-5 animate-spin text-primary/60" />
-        <span className="ml-2 text-sm text-gray-500">{t("loading")}</span>
+        <span className="ml-2 text-sm text-muted-foreground">{t("loading")}</span>
       </div>
     )
   }
@@ -218,12 +218,12 @@ export function MessageView({ emailId, messageId, messageType = 'received' }: Me
             messageSubject={message.subject}
             trigger={
               <button className="p-1.5 hover:bg-primary/10 rounded-md transition-colors">
-                <Share2 className="h-4 w-4 text-gray-500" />
+                <Share2 className="h-4 w-4 text-muted-foreground" />
               </button>
             }
           />
         </div>
-        <div className="text-xs text-gray-500 space-y-1">
+        <div className="text-xs text-muted-foreground space-y-1">
           {message.from_address && (
             <p>{t("from")}: {message.from_address}</p>
           )}

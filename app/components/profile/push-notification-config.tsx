@@ -12,6 +12,14 @@ interface PushStatusResponse {
   count: number
 }
 
+interface PushTestResponse {
+  success: number
+  failed: number
+  total: number
+  reasons?: string[]
+  error?: string
+}
+
 function base64UrlToUint8Array(base64Url: string): Uint8Array {
   const padding = "=".repeat((4 - (base64Url.length % 4)) % 4)
   const base64 = (base64Url + padding).replace(/-/g, "+").replace(/_/g, "/")
@@ -156,19 +164,24 @@ export function PushNotificationConfig() {
       const res = await fetch("/api/push-subscriptions/test", {
         method: "POST",
       })
-      if (!res.ok) {
-        throw new Error(t("testFailed"))
+      const data = await res.json() as PushTestResponse
+      if (!res.ok || data.success < 1) {
+        const reason = data.error || data.reasons?.[0] || t("testFailedDesc")
+        throw new Error(reason)
       }
 
       toast({
         title: t("testSuccess"),
-        description: t("testSuccessDesc"),
+        description: data.failed > 0
+          ? `${t("testSuccessDesc")} (${data.success}/${data.total})`
+          : t("testSuccessDesc"),
       })
     } catch (error) {
       console.error("Failed to send test push:", error)
+      const reason = error instanceof Error ? error.message : t("testFailedDesc")
       toast({
         title: t("testFailed"),
-        description: t("testFailedDesc"),
+        description: reason,
         variant: "destructive",
       })
     } finally {

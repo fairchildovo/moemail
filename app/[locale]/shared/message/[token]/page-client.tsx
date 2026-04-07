@@ -28,7 +28,7 @@ export function SharedMessagePageClient({ message }: SharedMessagePageClientProp
   const tShared = useTranslations("emails.shared")
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto p-4 max-w-7xl">
         <BrandHeader
           title={message.emailAddress || message.to_address || message.subject}

@@ -73,8 +73,8 @@ export function SharedMessageDetail({
                   padding: 0;
                   min-height: 100%;
                   font-family: system-ui, -apple-system, sans-serif;
-                  color: ${theme === "dark" ? "#fff" : "#000"};
-                  background: ${theme === "dark" ? "#1a1a1a" : "#fff"};
+                  color: ${theme === "dark" ? "#f2f2f5" : "#111111"};
+                  background: ${theme === "dark" ? "#11131a" : "#ffffff"};
                 }
                 body {
                   padding: 20px;
@@ -84,7 +84,7 @@ export function SharedMessageDetail({
                   height: auto;
                 }
                 a {
-                  color: #2563eb;
+                  color: ${theme === "dark" ? "#93b4ff" : "#2563eb"};
                 }
                 ::-webkit-scrollbar {
                   width: 6px;
@@ -96,8 +96,8 @@ export function SharedMessageDetail({
                 ::-webkit-scrollbar-thumb {
                   background: ${
                     theme === "dark"
-                      ? "rgba(130, 109, 217, 0.3)"
-                      : "rgba(130, 109, 217, 0.2)"
+                      ? "rgba(255, 255, 255, 0.24)"
+                      : "rgba(17, 17, 17, 0.18)"
                   };
                   border-radius: 9999px;
                   transition: background-color 0.2s;
@@ -105,16 +105,16 @@ export function SharedMessageDetail({
                 ::-webkit-scrollbar-thumb:hover {
                   background: ${
                     theme === "dark"
-                      ? "rgba(130, 109, 217, 0.5)"
-                      : "rgba(130, 109, 217, 0.4)"
+                      ? "rgba(255, 255, 255, 0.38)"
+                      : "rgba(17, 17, 17, 0.28)"
                   };
                 }
                 * {
                   scrollbar-width: thin;
                   scrollbar-color: ${
                     theme === "dark"
-                      ? "rgba(130, 109, 217, 0.3) transparent"
-                      : "rgba(130, 109, 217, 0.2) transparent"
+                      ? "rgba(255, 255, 255, 0.24) transparent"
+                      : "rgba(17, 17, 17, 0.18) transparent"
                   };
                 }
               </style>
@@ -157,14 +157,14 @@ export function SharedMessageDetail({
     return (
       <div className="flex items-center justify-center h-32">
         <Loader2 className="w-5 h-5 animate-spin text-primary/60" />
-        <span className="ml-2 text-sm text-gray-500">{t.loading}</span>
+        <span className="ml-2 text-sm text-muted-foreground">{t.loading}</span>
       </div>
     )
   }
 
   if (!message) {
     return (
-      <div className="flex items-center justify-center h-32 text-gray-500">
+      <div className="flex items-center justify-center h-32 text-muted-foreground">
         {t.selectMessage}
       </div>
     )
@@ -176,7 +176,7 @@ export function SharedMessageDetail({
         <div className="flex items-start justify-between gap-2">
           <h3 className="text-base font-bold flex-1">{message.subject}</h3>
         </div>
-        <div className="text-xs text-gray-500 space-y-1">
+        <div className="text-xs text-muted-foreground space-y-1">
           {message.from_address && (
             <p>
               {t.from}: {message.from_address}
@@ -231,7 +231,7 @@ export function SharedMessageDetail({
             {message.content}
           </div>
         ) : (
-          <div className="flex items-center justify-center h-32 text-gray-500 text-sm">
+          <div className="flex items-center justify-center h-32 text-muted-foreground text-sm">
             {t.selectMessage}
           </div>
         )}

@@ -35,12 +35,14 @@ export async function POST() {
 
   let success = 0
   let failed = 0
+  const failureReasons: string[] = []
   for (const item of subscriptions) {
     let subscription: StoredPushSubscription
     try {
       subscription = JSON.parse(item.subscription) as StoredPushSubscription
     } catch {
       failed += 1
+      failureReasons.push("Invalid subscription JSON")
       await db
         .update(pushSubscriptions)
         .set({
@@ -66,17 +68,37 @@ export async function POST() {
         .where(eq(pushSubscriptions.id, item.id))
     } else {
       failed += 1
+      const reason = result.error ?? `Push failed${result.status ? ` (${result.status})` : ""}`
+      failureReasons.push(reason)
       await db
         .update(pushSubscriptions)
         .set({
           enabled: !result.shouldDelete,
           updatedAt: now,
           lastFailureAt: now,
-          lastError: result.error ?? `Push failed${result.status ? ` (${result.status})` : ""}`,
+          lastError: reason,
         })
         .where(eq(pushSubscriptions.id, item.id))
     }
   }
 
-  return Response.json({ success, failed, total: subscriptions.length })
+  if (success === 0) {
+    return Response.json(
+      {
+        error: "No test push was delivered",
+        success,
+        failed,
+        total: subscriptions.length,
+        reasons: [...new Set(failureReasons)].slice(0, 3),
+      },
+      { status: 502 },
+    )
+  }
+
+  return Response.json({
+    success,
+    failed,
+    total: subscriptions.length,
+    reasons: [...new Set(failureReasons)].slice(0, 3),
+  })
 }

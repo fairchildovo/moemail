@@ -219,14 +219,14 @@ export function MessageList({ email, messageType, onMessageSelect, selectedMessa
         >
           <RefreshCw className="h-4 w-4" />
         </Button>
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-muted-foreground">
           {total > 0 ? `${total} ${t("messageCount")}` : t("noMessages")}
         </span>
       </div>
 
       <div className="flex-1 overflow-auto" onScroll={handleScroll}>
         {loading ? (
-          <div className="p-4 text-center text-sm text-gray-500">{t("loading")}</div>
+          <div className="p-4 text-center text-sm text-muted-foreground">{t("loading")}</div>
         ) : messages.length > 0 ? (
           <div className="divide-y divide-primary/10">
             {messages.map(message => (
@@ -242,7 +242,7 @@ export function MessageList({ email, messageType, onMessageSelect, selectedMessa
                   <Mail className="w-4 h-4 text-primary/60 mt-1" />
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-sm truncate">{message.subject}</p>
-                    <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
+                    <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
                       <span className="truncate">
                         {message.from_address || message.to_address || ''}
                       </span>
@@ -283,13 +283,13 @@ export function MessageList({ email, messageType, onMessageSelect, selectedMessa
               </div>
             ))}
             {loadingMore && (
-              <div className="text-center text-sm text-gray-500 py-2">
+              <div className="text-center text-sm text-muted-foreground py-2">
                 {t("loadingMore")}
               </div>
             )}
           </div>
         ) : (
-          <div className="p-4 text-center text-sm text-gray-500">
+          <div className="p-4 text-center text-sm text-muted-foreground">
             {t("noMessages")}
           </div>
         )}
