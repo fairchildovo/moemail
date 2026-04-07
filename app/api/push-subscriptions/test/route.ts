@@ -83,19 +83,18 @@ export async function POST() {
   }
 
   if (success === 0) {
-    return Response.json(
-      {
-        error: "No test push was delivered",
-        success,
-        failed,
-        total: subscriptions.length,
-        reasons: [...new Set(failureReasons)].slice(0, 3),
-      },
-      { status: 502 },
-    )
+    return Response.json({
+      ok: false,
+      error: "No test push was delivered",
+      success,
+      failed,
+      total: subscriptions.length,
+      reasons: [...new Set(failureReasons)].slice(0, 3),
+    })
   }
 
   return Response.json({
+    ok: true,
     success,
     failed,
     total: subscriptions.length,
