@@ -282,3 +282,4 @@ Proxy environment variables detected. We'll use your proxy for fetch requests.
  GET /api/auth/session 500 in 16ms
  GET /api/auth/session 500 in 25ms
  GET /sw.js 404 in 45ms
+ ✓ Compiled in 3.3s (2395 modules)

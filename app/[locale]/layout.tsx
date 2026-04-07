@@ -85,9 +85,10 @@ export async function generateMetadata({
       canonical: `${baseUrl}/${locale}`,
       languages,
     },
-    manifest: '/manifest.json',
+    manifest: '/manifest.json?v=2',
     icons: [
-      { rel: 'apple-touch-icon', url: '/icons/icon-192x192.png' },
+      { rel: 'icon', url: '/favicon.ico?v=2' },
+      { rel: 'apple-touch-icon', url: '/icons/icon-192x192.png?v=2' },
     ],
   }
 }
