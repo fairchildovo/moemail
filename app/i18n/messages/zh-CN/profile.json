@@ -128,7 +128,8 @@
     "testSuccess": "测试通知发送成功",
     "testSuccessDesc": "如果浏览器在线，应该能立即收到通知",
     "testFailed": "测试通知发送失败",
-    "testFailedDesc": "请检查订阅状态和服务端配置"
+    "testFailedDesc": "请检查订阅状态和服务端配置",
+    "testTemplateBody": "这是一条测试通知，用于验证浏览器通知功能是否正常。"
   },
   "website": {
     "title": "网站配置",

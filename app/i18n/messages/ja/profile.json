@@ -128,7 +128,8 @@
     "testSuccess": "テスト通知を送信しました",
     "testSuccessDesc": "ブラウザがオンラインならすぐに表示されます",
     "testFailed": "テスト通知の送信に失敗しました",
-    "testFailedDesc": "購読状態とサーバー設定を確認してください"
+    "testFailedDesc": "購読状態とサーバー設定を確認してください",
+    "testTemplateBody": "ブラウザ通知が正常に動作するか確認するためのテスト通知です。"
   },
   "website": {
     "title": "サイト設定",

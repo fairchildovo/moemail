@@ -128,7 +128,8 @@
     "testSuccess": "Test notification sent",
     "testSuccessDesc": "If your browser is online, it should appear shortly",
     "testFailed": "Failed to send test notification",
-    "testFailedDesc": "Please check subscription status and server configuration"
+    "testFailedDesc": "Please check subscription status and server configuration",
+    "testTemplateBody": "This is a test notification to verify browser notifications are working."
   },
   "website": {
     "title": "Website Configuration",

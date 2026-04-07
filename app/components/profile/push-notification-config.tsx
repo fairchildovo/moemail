@@ -12,14 +12,6 @@ interface PushStatusResponse {
   count: number
 }
 
-interface PushTestResponse {
-  success: number
-  failed: number
-  total: number
-  reasons?: string[]
-  error?: string
-}
-
 function base64UrlToUint8Array(base64Url: string): Uint8Array {
   const padding = "=".repeat((4 - (base64Url.length % 4)) % 4)
   const base64 = (base64Url + padding).replace(/-/g, "+").replace(/_/g, "/")
@@ -161,31 +153,27 @@ export function PushNotificationConfig() {
   const handleTest = async () => {
     setTesting(true)
     try {
-      const res = await fetch("/api/push-subscriptions/test", {
-        method: "POST",
+      if (!("Notification" in window) || Notification.permission !== "granted") {
+        throw new Error(t("permissionDeniedDesc"))
+      }
+
+      const registration = await navigator.serviceWorker.getRegistration("/")
+      if (!registration) {
+        throw new Error(t("subscribeFailedDesc"))
+      }
+      const locale = window.location.pathname.split("/")[1] || "zh-CN"
+
+      await registration.showNotification("TianMail", {
+        body: t("testTemplateBody"),
+        icon: "/icons/icon-192x192-v3.png",
+        badge: "/icons/icon-192x192-v3.png",
+        tag: `test-${Date.now()}`,
+        data: { url: `/${locale}/moe` },
       })
-      const raw = await res.text()
-      let data: PushTestResponse | null = null
-      try {
-        data = JSON.parse(raw) as PushTestResponse
-      } catch {
-        data = null
-      }
-
-      if (!data) {
-        throw new Error(`HTTP ${res.status}: ${raw.slice(0, 120)}`)
-      }
-
-      if (!res.ok || data.success < 1) {
-        const reason = data.reasons?.[0] || data.error || t("testFailedDesc")
-        throw new Error(reason)
-      }
 
       toast({
         title: t("testSuccess"),
-        description: data.failed > 0
-          ? `${t("testSuccessDesc")} (${data.success}/${data.total})`
-          : t("testSuccessDesc"),
+        description: t("testSuccessDesc"),
       })
     } catch (error) {
       console.error("Failed to send test push:", error)

@@ -128,7 +128,8 @@
     "testSuccess": "테스트 알림을 보냈습니다",
     "testSuccessDesc": "브라우저가 온라인이면 곧 표시됩니다",
     "testFailed": "테스트 알림 전송에 실패했습니다",
-    "testFailedDesc": "구독 상태와 서버 설정을 확인하세요"
+    "testFailedDesc": "구독 상태와 서버 설정을 확인하세요",
+    "testTemplateBody": "브라우저 알림 기능이 정상인지 확인하는 테스트 알림입니다."
   },
   "website": {
     "title": "웹사이트 설정",
