@@ -57,6 +57,7 @@ export function EmailList({ onEmailSelect, selectedEmailId }: EmailListProps) {
   const [total, setTotal] = useState(0)
   const [emailToDelete, setEmailToDelete] = useState<Email | null>(null)
   const { toast } = useToast()
+  const [pollTick, setPollTick] = useState(0)
 
   const fetchEmails = async (cursor?: string) => {
     try {
@@ -119,6 +120,26 @@ export function EmailList({ onEmailSelect, selectedEmailId }: EmailListProps) {
   useEffect(() => {
     if (session) fetchEmails()
   }, [session])
+
+  useEffect(() => {
+    if (!session) return
+
+    const timer = window.setInterval(() => {
+      if (!document.hidden) {
+        setPollTick((v) => v + 1)
+      }
+    }, EMAIL_CONFIG.POLL_INTERVAL)
+
+    return () => {
+      window.clearInterval(timer)
+    }
+  }, [session])
+
+  useEffect(() => {
+    if (!session || pollTick === 0) return
+    fetchEmails()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pollTick, session])
 
   const handleDelete = async (email: Email) => {
     try {

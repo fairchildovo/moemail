@@ -5,29 +5,53 @@ self.addEventListener("push", (event) => {
     url: "/",
   }
 
-  let payload = fallback
-  if (event.data) {
+  const getPayload = async () => {
+    if (event.data) {
+      try {
+        const data = event.data.json()
+        return {
+          title: data.title || fallback.title,
+          body: data.body || fallback.body,
+          url: data.url || fallback.url,
+          messageId: data.messageId,
+        }
+      } catch {
+        return fallback
+      }
+    }
+
     try {
-      const data = event.data.json()
-      payload = {
-        title: data.title || fallback.title,
-        body: data.body || fallback.body,
-        url: data.url || fallback.url,
+      const response = await fetch("/api/push-subscriptions/latest", {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store",
+      })
+      if (!response.ok) {
+        return fallback
+      }
+
+      const latest = await response.json()
+      return {
+        title: latest.title || fallback.title,
+        body: latest.body || fallback.body,
+        url: latest.url || fallback.url,
+        messageId: latest.messageId,
       }
     } catch {
-      payload = fallback
+      return fallback
     }
   }
 
   event.waitUntil(
-    self.registration.showNotification(payload.title, {
+    getPayload().then((payload) => self.registration.showNotification(payload.title, {
       body: payload.body,
       icon: "/icons/icon-192x192.png",
       badge: "/icons/icon-192x192.png",
+      tag: payload.messageId || "new-email",
       data: {
         url: payload.url,
       },
-    }),
+    })),
   )
 })
 
