@@ -177,7 +177,7 @@ export function PushNotificationConfig() {
       }
 
       if (!res.ok || data.success < 1) {
-        const reason = data.error || data.reasons?.[0] || t("testFailedDesc")
+        const reason = data.reasons?.[0] || data.error || t("testFailedDesc")
         throw new Error(reason)
       }
 

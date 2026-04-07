@@ -109,7 +109,11 @@ async function signJwt(payload: Record<string, unknown>, privateJwk: JsonWebKey)
     new TextEncoder().encode(signingInput),
   )
 
-  const joseSignature = derToJoseSignature(new Uint8Array(derSignature), 32)
+  const signatureBytes = new Uint8Array(derSignature)
+  // WebCrypto runtimes may return either DER or raw IEEE-P1363 (r|s, 64 bytes for P-256).
+  const joseSignature = signatureBytes.length === 64
+    ? signatureBytes
+    : derToJoseSignature(signatureBytes, 32)
   return `${signingInput}.${toBase64Url(joseSignature)}`
 }
 
@@ -156,25 +160,51 @@ export async function sendWebPushNotification(
       vapidConfig.privateJwk,
     )
 
-    const response = await fetch(subscription.endpoint, {
-      method: "POST",
-      headers: {
-        TTL: "60",
+    const sendWithHeaders = async (headers: Record<string, string>) => {
+      return fetch(subscription.endpoint, {
+        method: "POST",
+        headers: {
+          TTL: "60",
+          Urgency: "normal",
+          ...headers,
+        },
+      })
+    }
+
+    // RFC8292-compatible format, works better across modern push services.
+    let response = await sendWithHeaders({
+      Authorization: `vapid t=${jwt}, k=${vapidConfig.publicKey}`,
+      "Crypto-Key": `p256ecdsa=${vapidConfig.publicKey}`,
+    })
+
+    // Backward-compatible fallback for some gateways.
+    if (response.status === 401 || response.status === 403) {
+      response = await sendWithHeaders({
         Authorization: `WebPush ${jwt}`,
         "Crypto-Key": `p256ecdsa=${vapidConfig.publicKey}`,
-      },
-    })
+      })
+    }
 
     if (response.ok) {
       return { ok: true, status: response.status, shouldDelete: false }
     }
 
     const shouldDelete = response.status === 404 || response.status === 410
+    let gatewayMessage = ""
+    try {
+      const raw = await response.text()
+      gatewayMessage = raw.slice(0, 160)
+    } catch {
+      gatewayMessage = ""
+    }
+
     return {
       ok: false,
       status: response.status,
       shouldDelete,
-      error: `Push gateway responded with ${response.status}`,
+      error: gatewayMessage
+        ? `Push gateway responded with ${response.status}: ${gatewayMessage}`
+        : `Push gateway responded with ${response.status}`,
     }
   } catch (error) {
     return {
