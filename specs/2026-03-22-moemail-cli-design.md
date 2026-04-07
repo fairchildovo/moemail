@@ -1,10 +1,10 @@
-# MoeMail CLI — Agent-First Command Line Tool
+# TianMail CLI — Agent-First Command Line Tool
 
 ## Overview
 
-A CLI tool that wraps MoeMail's existing OpenAPI, optimized for AI Agent workflows. Agents can create temporary emails, wait for incoming messages, read content, and manage mailboxes through simple shell commands.
+A CLI tool that wraps TianMail's existing OpenAPI, optimized for AI Agent workflows. Agents can create temporary emails, wait for incoming messages, read content, and manage mailboxes through simple shell commands.
 
-**Goal:** Make MoeMail a first-class tool in any AI Agent's toolchain with minimal friction — one command per action, structured JSON output, minimal server-side changes.
+**Goal:** Make TianMail a first-class tool in any AI Agent's toolchain with minimal friction — one command per action, structured JSON output, minimal server-side changes.
 
 **Server-side changes:** One small change required — the `POST /api/emails/{id}/send` endpoint currently uses session-only auth. It needs to be updated to also support API Key auth (switch from `auth()` to `getUserId()`) so the CLI `send` command works.
 
@@ -15,7 +15,7 @@ Agent (Claude / GPT / Custom)
     ↓ shell call
 moemail CLI (npm package, bun-built single JS file)
     ↓ HTTPS + X-API-Key header
-MoeMail Server (existing Next.js API, one minor auth change for send endpoint)
+TianMail Server (existing Next.js API, one minor auth change for send endpoint)
     ↓
 Cloudflare D1 / Email Workers
 ```
@@ -306,7 +306,7 @@ Commander 自动生成，Agent 调用一次即可获取完整用法：
 $ moemail --help
 Usage: moemail [options] [command]
 
-MoeMail CLI — Agent-friendly temporary email tool
+TianMail CLI — Agent-friendly temporary email tool
 
 Options:
   -V, --version       output the version number
@@ -338,7 +338,7 @@ Options:
 ### 2. README 文档
 
 `packages/cli/README.md` 作为 npm 包首页展示，包含：
-- 一句话介绍：Agent-first CLI for MoeMail temporary email service
+- 一句话介绍：Agent-first CLI for TianMail temporary email service
 - 安装命令
 - 快速开始（3 步：config → create → wait）
 - 完整命令参考表
@@ -347,14 +347,14 @@ Options:
 
 ### 3. llms.txt
 
-在 MoeMail 站点根目录提供 `https://moemail.app/llms.txt`，遵循 llms.txt 协议。Agent 访问网站时自动发现可用工具。
+在 TianMail 站点根目录提供 `https://moemail.app/llms.txt`，遵循 llms.txt 协议。Agent 访问网站时自动发现可用工具。
 
 ```
-# MoeMail
+# TianMail
 
 > Temporary email service with CLI tool for AI Agents
 
-MoeMail provides disposable email addresses. Install the CLI for programmatic access:
+TianMail provides disposable email addresses. Install the CLI for programmatic access:
 
 ## CLI Tool
 

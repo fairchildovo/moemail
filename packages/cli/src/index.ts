@@ -13,7 +13,7 @@ const program = new Command();
 
 program
   .name("moemail")
-  .description("MoeMail CLI — Agent-friendly temporary email tool")
+  .description("TianMail CLI — Agent-friendly temporary email tool")
   .version("0.1.2")
   .option("--json", "output as JSON");
 

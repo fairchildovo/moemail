@@ -1,0 +1,272 @@
+
+> moemail@0.1.0 dev
+> next dev
+
+Proxy environment variables detected. We'll use your proxy for fetch requests.
+Proxy environment variables detected. We'll use your proxy for fetch requests.
+   ▲ Next.js 15.1.1
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.1.8:3000
+
+ ✓ Starting...
+> [PWA] PWA support is disabled
+> [PWA] PWA support is disabled
+ ✓ Ready in 4.2s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 1055ms (462 modules)
+ ○ Compiling /[locale] ...
+ ✓ Compiled /[locale] in 12.7s (2278 modules)
+ GET /en 200 in 71ms
+ ✓ Compiled in 992ms (514 modules)
+ GET /zh-CN 200 in 993ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 949ms (2389 modules)
+ GET /api/auth/session 500 in 1307ms
+ GET /favicon.ico 200 in 1264ms
+ GET /api/auth/session 500 in 11ms
+ GET /sw.js 404 in 595ms
+ ○ Compiling /[locale]/moe ...
+ ✓ Compiled /[locale]/moe in 1697ms (2514 modules)
+ GET /zh-CN/moe 200 in 2476ms
+ ○ Compiling /[locale]/login ...
+ ✓ Compiled /[locale]/login in 953ms (2533 modules)
+ GET /zh-CN/login 200 in 2563ms
+ GET /zh-CN/moe 200 in 2566ms
+ GET /zh-CN 200 in 1193ms
+ GET /api/auth/session 500 in 382ms
+ GET /api/auth/session 500 in 27ms
+ GET /sw.js 404 in 46ms
+ ✓ Compiled in 2.5s (2395 modules)
+ GET /zh-CN 200 in 788ms
+ ✓ Compiled in 1178ms (2395 modules)
+ GET /zh-CN 200 in 999ms
+ ✓ Compiled in 1469ms (2395 modules)
+ GET /zh-CN 200 in 1005ms
+ ✓ Compiled in 1463ms (2395 modules)
+ GET /zh-CN 200 in 972ms
+ ✓ Compiled in 1102ms (2395 modules)
+ GET /zh-CN 200 in 1051ms
+ ✓ Compiled in 882ms (2395 modules)
+ GET /zh-CN 200 in 730ms
+ GET /zh-CN 200 in 266ms
+ GET /favicon.ico 200 in 33ms
+ ○ Compiling /api/auth/[...auth] ...
+ ✓ Compiled /api/auth/[...auth] in 1614ms (1831 modules)
+ GET /api/auth/session 500 in 1917ms
+ GET /api/auth/session 500 in 661ms
+ GET /sw.js 404 in 793ms
+ ✓ Compiled in 1045ms (2395 modules)
+ GET /zh-CN 200 in 588ms
+ GET /favicon.ico 200 in 41ms
+ GET /favicon.ico 200 in 24ms
+ ✓ Compiled in 552ms (2395 modules)
+ GET /zh-CN 200 in 582ms
+ GET /favicon.ico 200 in 33ms
+ GET /favicon.ico 200 in 17ms
+ ✓ Compiled in 935ms (2395 modules)
+ GET /zh-CN 200 in 577ms
+ GET /favicon.ico 200 in 32ms
+ GET /favicon.ico 200 in 16ms
+ ✓ Compiled in 535ms (2395 modules)
+ GET /zh-CN 200 in 596ms
+ GET /favicon.ico 200 in 31ms
+ GET /favicon.ico 200 in 17ms
+ ✓ Compiled in 1034ms (2395 modules)
+ GET /zh-CN 200 in 599ms
+ GET /favicon.ico 200 in 46ms
+ GET /favicon.ico 200 in 18ms
+ ✓ Compiled in 630ms (2395 modules)
+ GET /zh-CN 200 in 631ms
+ GET /favicon.ico 200 in 30ms
+ GET /favicon.ico 200 in 19ms
+ GET /en 200 in 33ms
+ GET /en 200 in 69ms
+ ○ Compiling /api/auth/[...auth] ...
+ ✓ Compiled /api/auth/[...auth] in 2.4s (2450 modules)
+ GET /api/auth/session 500 in 2971ms
+ GET /ja 200 in 608ms
+ GET /api/auth/session 500 in 614ms
+ GET /ja 200 in 46ms
+ GET /api/auth/session 500 in 57ms
+ GET /ja 200 in 38ms
+ GET /api/auth/session 500 in 36ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 14ms
+ GET /api/auth/session 500 in 15ms
+ ✓ Compiled in 957ms (2450 modules)
+ GET /ja 200 in 574ms
+ GET /zh-CN 200 in 41ms
+ GET /zh-CN 200 in 38ms
+ GET /api/auth/session 500 in 262ms
+ GET /api/auth/session 500 in 19ms
+ GET /api/auth/session 500 in 13ms
+ GET /api/auth/session 500 in 13ms
+ GET /ko 200 in 32ms
+ GET /ko 200 in 30ms
+ GET /api/auth/session 500 in 19ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 18ms
+ GET /api/auth/session 500 in 13ms
+ GET /zh-TW 200 in 63ms
+ GET /zh-TW 200 in 42ms
+ GET /api/auth/session 500 in 20ms
+ GET /api/auth/session 500 in 21ms
+ GET /api/auth/session 500 in 15ms
+ GET /api/auth/session 500 in 17ms
+ GET /en 200 in 30ms
+ GET /en 200 in 42ms
+ GET /api/auth/session 500 in 18ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 14ms
+ GET /ja 200 in 33ms
+ GET /ja 200 in 35ms
+ GET /api/auth/session 500 in 13ms
+ GET /api/auth/session 500 in 15ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 12ms
+ GET /zh-CN 200 in 31ms
+ GET /zh-CN 200 in 29ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 11ms
+ GET /api/auth/session 500 in 10ms
+ GET /ja 200 in 80ms
+ GET /ja 200 in 1412ms
+ GET /api/auth/session 500 in 126ms
+ GET /api/auth/session 500 in 41ms
+ GET /api/auth/session 500 in 14ms
+ GET /api/auth/session 500 in 16ms
+ ✓ Compiled in 3s (2450 modules)
+ GET /ja 200 in 645ms
+ ✓ Compiled in 579ms (2450 modules)
+ GET /ja 200 in 624ms
+ ✓ Compiled in 553ms (2450 modules)
+ GET /ja 200 in 575ms
+ GET /en 200 in 43ms
+ GET /en 200 in 35ms
+ GET /api/auth/session 500 in 311ms
+ GET /api/auth/session 500 in 23ms
+ ✓ Compiled in 1117ms (2450 modules)
+ ✓ Compiled in 1ms (1831 modules)
+ GET /api/auth/session 500 in 1321ms
+ GET /api/auth/session 500 in 148ms
+ GET /en 200 in 720ms
+ GET /ja 200 in 36ms
+ GET /ja 200 in 43ms
+ GET /api/auth/session 500 in 17ms
+ ✓ Compiled in 874ms (2450 modules)
+ GET /api/auth/session 500 in 1111ms
+ GET /api/auth/session 500 in 15ms
+ GET /ja 200 in 648ms
+ GET /api/auth/session 500 in 13ms
+ GET /zh-CN 200 in 28ms
+ GET /zh-CN 200 in 37ms
+ GET /api/auth/session 500 in 11ms
+ GET /api/auth/session 500 in 13ms
+ GET /api/auth/session 500 in 11ms
+ GET /api/auth/session 500 in 11ms
+ GET /zh-TW 200 in 30ms
+ GET /zh-TW 200 in 37ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 11ms
+ GET /api/auth/session 500 in 10ms
+ GET /en 200 in 30ms
+ GET /en 200 in 36ms
+ GET /api/auth/session 500 in 11ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 12ms
+ ✓ Compiled in 1064ms (2450 modules)
+ GET /en 200 in 592ms
+ GET /zh-CN 200 in 36ms
+ GET /zh-CN 200 in 42ms
+ GET /api/auth/session 500 in 178ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 9ms
+ GET /api/auth/session 500 in 10ms
+ GET /ja 200 in 28ms
+ GET /ja 200 in 29ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 9ms
+ GET /api/auth/session 500 in 12ms
+ GET /en 200 in 47ms
+ ✓ Compiled in 902ms (2450 modules)
+ GET /en 200 in 584ms
+ GET /en 200 in 30ms
+ GET /en 200 in 32ms
+ GET /api/auth/session 500 in 141ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 9ms
+ GET /api/auth/session 500 in 12ms
+ GET /ja 200 in 32ms
+ GET /ja 200 in 33ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 11ms
+ GET /api/auth/session 500 in 10ms
+ ✓ Compiled in 864ms (2450 modules)
+ GET /ko 200 in 1067ms
+ GET /ko 200 in 44ms
+ GET /ko 200 in 43ms
+ GET /api/auth/session 500 in 171ms
+ GET /api/auth/session 500 in 11ms
+ GET /api/auth/session 500 in 9ms
+ GET /api/auth/session 500 in 10ms
+ GET /en 200 in 30ms
+ GET /en 200 in 38ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 9ms
+ ✓ Compiled in 607ms (2450 modules)
+ GET /zh-CN 200 in 590ms
+ GET /zh-CN 200 in 43ms
+ GET /zh-CN 200 in 36ms
+ GET /api/auth/session 500 in 181ms
+ GET /api/auth/session 500 in 77ms
+ GET /api/auth/session 500 in 123ms
+ GET /api/auth/session 500 in 134ms
+ GET /ja 200 in 35ms
+ GET /ja 200 in 37ms
+ GET /api/auth/session 500 in 11ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 12ms
+ GET /zh-TW 200 in 31ms
+ GET /zh-TW 200 in 40ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 14ms
+ GET /api/auth/session 500 in 12ms
+ GET /api/auth/session 500 in 10ms
+ ✓ Compiled in 914ms (2450 modules)
+ GET /zh-TW 200 in 633ms
+ GET /ko 200 in 46ms
+ GET /ko 200 in 36ms
+ GET /api/auth/session 500 in 166ms
+ GET /api/auth/session 500 in 14ms
+ GET /api/auth/session 500 in 13ms
+ GET /api/auth/session 500 in 12ms
+ GET /en 200 in 33ms
+ GET /en 200 in 30ms
+ GET /api/auth/session 500 in 14ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 10ms
+ GET /api/auth/session 500 in 10ms
+ ✓ Compiled in 981ms (2450 modules)
+ GET /en 200 in 594ms
+ GET /zh-CN 200 in 31ms
+ GET /zh-CN 200 in 46ms
+ ✓ Compiled in 946ms (2450 modules)
+ GET /api/auth/session 500 in 175ms
+ GET /zh-CN 200 in 822ms
+ GET /api/auth/session 500 in 182ms
+ GET /api/auth/session 500 in 183ms
+ GET /api/auth/session 500 in 42ms
+ ✓ Compiled in 2.7s (2450 modules)
+ GET /zh-CN 200 in 878ms
+ ✓ Compiled in 1711ms (2395 modules)
+ GET /zh-CN 200 in 610ms

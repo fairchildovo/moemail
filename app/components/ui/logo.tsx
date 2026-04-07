@@ -57,8 +57,8 @@ export function Logo() {
           </svg>
         </div>
       </div>
-      <span className="font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600">
-        MoeMail
+      <span className="font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-primary to-black">
+        TianMail
       </span>
     </Link>
   )

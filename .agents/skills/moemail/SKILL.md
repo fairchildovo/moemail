@@ -1,17 +1,17 @@
 ---
 name: moemail
-description: Use when working in this repository and an AI agent needs a temporary/disposable email address through the TianMail CLI.
+description: Use when working in this repository and an AI agent needs a temporary/disposable email address through the MoeMail CLI.
 ---
 
-# TianMail for This Repository
+# MoeMail for This Repository
 
 ## When to use
 
-Use this skill when you are inside the `moemail` repository and need to create inboxes, wait for messages, read message content, or send test emails with the TianMail CLI.
+Use this skill when you are inside the `moemail` repository and need to create inboxes, wait for messages, read message content, or send test emails with the MoeMail CLI.
 
 ## Install
 
-Install the TianMail CLI globally when it is not already available:
+Install the MoeMail CLI globally when it is not already available:
 
 ```bash
 npm i -g @moemail/cli

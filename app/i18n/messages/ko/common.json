@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "MoeMail"
+    "name": "TianMail"
   },
   "actions": {
     "ok": "확인",
@@ -15,5 +15,6 @@
     "logout": "로그아웃",
     "backToMailbox": "메일함으로 돌아가기"
   },
-  "github": "소스 코드 받기"
+  "github": "소스 코드 받기",
+  "contactMe": "문의하기"
 }

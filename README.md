@@ -1,7 +1,7 @@
 
 <p align="center">
-  <img src="public/icons/icon-192x192.png" alt="MoeMail Logo" width="100" height="100">
-  <h1 align="center">MoeMail</h1>
+  <img src="public/icons/icon-192x192.png" alt="TianMail Logo" width="100" height="100">
+  <h1 align="center">TianMail</h1>
 </p>
 
 <p align="center">
@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.producthunt.com/products/moemail?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-moemail" target="_blank" rel="noopener noreferrer"><img alt="MoeMail - OpenAPI‑first temp email, hosted &amp; ready | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1078475&amp;theme=light&amp;t=1770964043604"></a>
+  <a href="https://www.producthunt.com/products/moemail?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-moemail" target="_blank" rel="noopener noreferrer"><img alt="TianMail - OpenAPI‑first temp email, hosted &amp; ready | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1078475&amp;theme=light&amp;t=1770964043604"></a>
 </p>
 
 <p align="center">
@@ -214,7 +214,7 @@ This project supports automated deployment using GitHub Actions. It supports the
 
 ## Email Domain Configuration
 
-In the MoeMail User Profile page, you can configure the site's email domains. Supports multiple domain configurations, separated by commas.
+In the TianMail User Profile page, you can configure the site's email domains. Supports multiple domain configurations, separated by commas.
 ![Email Domain Configuration](https://pic.otaku.ren/20241227/AQAD88AxG67zeVd-.jpg "Email Domain Configuration")
 
 ### Cloudflare Email Routing Configuration
@@ -309,7 +309,7 @@ System settings are stored in Cloudflare KV, including:
 
 ## Sending Emails
 
-MoeMail supports sending emails using temporary addresses, based on [Resend](https://resend.com/) service.
+TianMail supports sending emails using temporary addresses, based on [Resend](https://resend.com/) service.
 
 ### Features
 
@@ -537,7 +537,7 @@ DELETE /api/emails/{emailId}/messages/{messageId}/share/{shareId}
 
 ## CLI Tool
 
-MoeMail provides an agent-first CLI tool for AI agents and automation workflows.
+TianMail provides an agent-first CLI tool for AI agents and automation workflows.
 
 ### Install
 
@@ -585,7 +585,7 @@ CONTENT=$(moemail read --email-id $EMAIL_ID --message-id $MSG_ID --json)
 
 ### AI Agent Skill
 
-Install the built-in skill so AI agents (Claude Code, Codex, etc.) automatically know how to use MoeMail:
+Install the built-in skill so AI agents (Claude Code, Codex, etc.) automatically know how to use TianMail:
 
 ```bash
 # Auto-detect installed agent platforms and install
@@ -660,7 +660,7 @@ Welcome to submit Pull Requests or Issues to help improve this project.
       Follow official account for more project updates, AI, Blockchain, and Indie Dev news.
     </td>
     <td>
-      Add WeChat, remark "MoeMail" to join the WeChat community group.
+      Add WeChat, remark "TianMail" to join the WeChat community group.
     </td>
   </tr>
 </table>

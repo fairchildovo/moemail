@@ -1,6 +1,6 @@
-# MoeMail CLI
+# TianMail CLI
 
-Agent-first CLI for MoeMail temporary email service
+Agent-first CLI for TianMail temporary email service
 
 ## Install
 
@@ -65,7 +65,7 @@ moemail delete --email-id $EMAIL_ID
 
 ## AI Agent Skill
 
-The CLI ships with a built-in skill file that teaches AI agents how to use MoeMail. Install it to your agent platform:
+The CLI ships with a built-in skill file that teaches AI agents how to use TianMail. Install it to your agent platform:
 
 ```bash
 # Auto-detect installed platforms (Claude Code, Codex)
@@ -79,7 +79,7 @@ moemail skill install --platform codex
 moemail skill install --platform all
 ```
 
-After installation, AI agents will automatically know how to create temporary emails, wait for messages, and read content using the MoeMail CLI.
+After installation, AI agents will automatically know how to create temporary emails, wait for messages, and read content using the TianMail CLI.
 
 ## JSON Output
 

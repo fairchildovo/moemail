@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "MoeMail"
+    "name": "TianMail"
   },
   "actions": {
     "ok": "OK",
@@ -15,5 +15,6 @@
     "logout": "Logout",
     "backToMailbox": "Back to Mailbox"
   },
-  "github": "Get Source Code"
+  "github": "Get Source Code",
+  "contactMe": "Contact Me"
 }

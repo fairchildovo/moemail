@@ -1,10 +1,10 @@
-# MoeMail CLI Implementation Plan
+# TianMail CLI Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build an agent-first CLI tool that wraps MoeMail's existing REST API, published as an npm package.
+**Goal:** Build an agent-first CLI tool that wraps TianMail's existing REST API, published as an npm package.
 
-**Architecture:** CLI lives in `packages/cli/`, uses commander for arg parsing, calls MoeMail API via `fetch` with `X-API-Key` auth. One server-side fix needed for the send endpoint auth.
+**Architecture:** CLI lives in `packages/cli/`, uses commander for arg parsing, calls TianMail API via `fetch` with `X-API-Key` auth. One server-side fix needed for the send endpoint auth.
 
 **Tech Stack:** TypeScript, Bun (build), commander (CLI framework), Node built-in `fetch` and `fs`
 
@@ -58,7 +58,7 @@ packages/cli/
 {
   "name": "moemail-cli",
   "version": "0.1.0",
-  "description": "Agent-first CLI for MoeMail temporary email service",
+  "description": "Agent-first CLI for TianMail temporary email service",
   "type": "module",
   "bin": {
     "moemail": "dist/index.js"
@@ -106,7 +106,7 @@ const program = new Command();
 
 program
   .name("moemail")
-  .description("MoeMail CLI — Agent-friendly temporary email tool")
+  .description("TianMail CLI — Agent-friendly temporary email tool")
   .version("0.1.0");
 
 program.parse();
@@ -254,7 +254,7 @@ const program = new Command();
 
 program
   .name("moemail")
-  .description("MoeMail CLI — Agent-friendly temporary email tool")
+  .description("TianMail CLI — Agent-friendly temporary email tool")
   .version("0.1.0")
   .option("--json", "output as JSON");
 
@@ -997,14 +997,14 @@ git commit -m "feat(cli): add send command"
 - [ ] **Step 1: Write README**
 
 Include:
-- One-line description: "Agent-first CLI for MoeMail temporary email service"
+- One-line description: "Agent-first CLI for TianMail temporary email service"
 - Install: `npm i -g moemail-cli`
 - Quick start (3 steps: config → create → wait)
 - Command reference table (all 7 commands with key flags)
 - Agent workflow example (the bash script from the spec)
 - JSON output format note
 - Exit codes table
-- Link to MoeMail main project
+- Link to TianMail main project
 
 - [ ] **Step 2: Commit**
 
