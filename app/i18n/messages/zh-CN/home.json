@@ -73,7 +73,7 @@
       },
       "5": {
         "question": "如何访问 OpenAPI？",
-        "answer": "您可以访问 https://email.tianzora.uno/api.html#openapi 查看 OpenAPI 文档。认证需要使用个人资料中的 API 密钥。"
+        "answer": "您可以访问 https://tianzora.uno/api.html#openapi 查看 OpenAPI 文档。认证需要使用个人资料中的 API 密钥。"
       }
     }
   },

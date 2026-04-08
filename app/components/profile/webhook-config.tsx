@@ -28,6 +28,9 @@ export function WebhookConfig() {
   const [showDocs, setShowDocs] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
   const { toast } = useToast()
+  const displayDomain = typeof window !== "undefined"
+    ? window.location.host.replace(/^email\./, "")
+    : "tianzora.uno"
 
   useEffect(() => {
     fetch("/api/webhook")
@@ -200,7 +203,7 @@ export function WebhookConfig() {
   "content": "${t("docs.content")}",
   "html": "${t("docs.html")}",
   "receivedAt": "2024-01-01T12:00:00.000Z",
-  "toAddress": "your-email@${window.location.host}"
+  "toAddress": "your-email@${displayDomain}"
 }`}
                 </pre>
               </div>

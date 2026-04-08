@@ -73,7 +73,7 @@
       },
       "5": {
         "question": "How to access OpenAPI?",
-        "answer": "You can access the OpenAPI definition at https://email.tianzora.uno/api.html#openapi. Authentication requires an API Key from your profile."
+        "answer": "You can access the OpenAPI definition at https://tianzora.uno/api.html#openapi. Authentication requires an API Key from your profile."
       }
     }
   },

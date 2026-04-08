@@ -73,7 +73,7 @@
       },
       "5": {
         "question": "OpenAPI にアクセスするには？",
-        "answer": "https://email.tianzora.uno/api.html#openapi で OpenAPI 定義にアクセスできます。認証にはプロフィールから API キーが必要です。"
+        "answer": "https://tianzora.uno/api.html#openapi で OpenAPI 定義にアクセスできます。認証にはプロフィールから API キーが必要です。"
       }
     }
   },

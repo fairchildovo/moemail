@@ -73,7 +73,7 @@
       },
       "5": {
         "question": "如何存取 OpenAPI？",
-        "answer": "您可以存取 https://email.tianzora.uno/api.html#openapi 檢視 OpenAPI 文件。認證需要使用個人資料中的 API 金鑰。"
+        "answer": "您可以存取 https://tianzora.uno/api.html#openapi 檢視 OpenAPI 文件。認證需要使用個人資料中的 API 金鑰。"
       }
     }
   },
