@@ -22,6 +22,126 @@
   "actions": {
     "enterMailbox": "Enter Mailbox",
     "getStarted": "Get Started"
+  },
+  "howToUse": {
+    "title": "How It Works",
+    "steps": {
+      "register": {
+        "title": "Create Account",
+        "description": "Sign up to securely access your personal dashboard."
+      },
+      "create": {
+        "title": "Create Mailbox",
+        "description": "Generate a custom or random temporary email instantly."
+      },
+      "manage": {
+        "title": "Manage Messages",
+        "description": "Receive and read incoming emails in real time."
+      },
+      "webhook": {
+        "title": "Webhooks",
+        "description": "Send real-time notifications to your server when new mail arrives."
+      },
+      "openapi": {
+        "title": "OpenAPI",
+        "description": "Integrate TianMail with your app through standard REST APIs."
+      },
+      "share": {
+        "title": "Sharing",
+        "description": "Share one message or an entire mailbox with others."
+      }
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": {
+      "1": {
+        "question": "Do I need to register?",
+        "answer": "Yes, registration is required to manage your temporary mailboxes securely."
+      },
+      "2": {
+        "question": "How long do emails last?",
+        "answer": "Emails are stored temporarily and automatically deleted after they expire."
+      },
+      "3": {
+        "question": "Can I send emails?",
+        "answer": "Sending functionality is available for users with appropriate permissions."
+      },
+      "4": {
+        "question": "Can I have multiple mailboxes?",
+        "answer": "Yes, you can create and manage multiple temporary email addresses from a single account."
+      },
+      "5": {
+        "question": "How to access OpenAPI?",
+        "answer": "You can access the OpenAPI definition at https://email.tianzora.uno/api.html#openapi. Authentication requires an API Key from your profile."
+      }
+    }
+  },
+  "footer": {
+    "brand": "TianMail",
+    "copyright": "© 2026 TianMail. All rights reserved.",
+    "policy": {
+      "title": "Privacy Policy & Terms",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "openapi": "API Docs"
+    },
+    "contact": "Contact"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: April 8, 2026",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "content": "Welcome to TianMail. We value your privacy and work to keep your data secure while using our temporary email service."
+      },
+      "collection": {
+        "title": "2. Information Collection",
+        "content": "To provide account functionality, we collect only the minimum required information such as username and login identifiers."
+      },
+      "emailContent": {
+        "title": "3. Email Content",
+        "content": "Messages sent to temporary addresses are stored based on validity settings and removed automatically after expiration."
+      },
+      "thirdParty": {
+        "title": "4. Third-Party Services",
+        "content": "We may rely on necessary third-party infrastructure such as cloud hosting and security services."
+      },
+      "contact": {
+        "title": "5. Contact",
+        "content": "If you have questions about this policy, please contact us through the project repository."
+      }
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: April 8, 2026",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance",
+        "content": "By accessing and using TianMail, you agree to comply with these terms."
+      },
+      "description": {
+        "title": "2. Service Description",
+        "content": "TianMail provides temporary disposable email addresses on an \"as-is\" basis for lawful use."
+      },
+      "prohibited": {
+        "title": "3. Prohibited Use",
+        "items": {
+          "1": "Sending spam or unsolicited messages.",
+          "2": "Using the service for illegal activities.",
+          "3": "Harassment, abuse, or malicious behavior."
+        }
+      },
+      "disclaimer": {
+        "title": "4. Disclaimer",
+        "content": "We do not guarantee uninterrupted service availability. Temporary messages may be removed according to policy."
+      },
+      "changes": {
+        "title": "5. Changes to Terms",
+        "content": "We reserve the right to update these terms when necessary."
+      }
+    }
   }
 }
-

@@ -22,6 +22,126 @@
   "actions": {
     "enterMailbox": "进入邮箱",
     "getStarted": "开始使用"
+  },
+  "howToUse": {
+    "title": "如何使用",
+    "steps": {
+      "register": {
+        "title": "注册账号",
+        "description": "创建一个账号以安全地访问您的个人控制台。"
+      },
+      "create": {
+        "title": "创建邮箱",
+        "description": "立即生成自定义或随机的临时邮箱地址。"
+      },
+      "manage": {
+        "title": "管理邮件",
+        "description": "在控制台中实时接收和查看您的邮件。"
+      },
+      "webhook": {
+        "title": "Webhooks",
+        "description": "当邮件到达时，实时向您的服务器发送通知。"
+      },
+      "openapi": {
+        "title": "OpenAPI",
+        "description": "使用标准 REST API 将 TianMail 集成到您的应用中。"
+      },
+      "share": {
+        "title": "分享功能",
+        "description": "轻松与他人分享单个邮件或整个邮箱。"
+      }
+    }
+  },
+  "faq": {
+    "title": "常见问题",
+    "items": {
+      "1": {
+        "question": "我需要注册吗？",
+        "answer": "是的，为了安全地管理您的临时邮箱，需要注册账号。"
+      },
+      "2": {
+        "question": "邮件会保存多久？",
+        "answer": "邮件会暂时存储，并在过期后自动删除。"
+      },
+      "3": {
+        "question": "我可以发送邮件吗？",
+        "answer": "拥有相应权限的用户可以使用发送邮件功能。"
+      },
+      "4": {
+        "question": "我可以拥有多个邮箱吗？",
+        "answer": "是的，您可以在一个账号下创建并管理多个临时邮箱地址。"
+      },
+      "5": {
+        "question": "如何访问 OpenAPI？",
+        "answer": "您可以访问 https://email.tianzora.uno/api.html#openapi 查看 OpenAPI 文档。认证需要使用个人资料中的 API 密钥。"
+      }
+    }
+  },
+  "footer": {
+    "brand": "TianMail",
+    "copyright": "© 2026 TianMail. 版权所有。",
+    "policy": {
+      "title": "隐私政策 & 服务条款",
+      "privacy": "隐私政策",
+      "terms": "服务条款",
+      "openapi": "API 文档"
+    },
+    "contact": "联系方式"
+  },
+  "privacy": {
+    "title": "隐私政策",
+    "lastUpdated": "最后更新：2026年4月8日",
+    "sections": {
+      "introduction": {
+        "title": "1. 简介",
+        "content": "欢迎使用 TianMail。我们尊重您的隐私，并致力于在您使用临时邮箱服务时保护您的数据安全。"
+      },
+      "collection": {
+        "title": "2. 信息收集",
+        "content": "为提供账号能力，我们会收集最少必要信息（例如用户名、登录标识）。我们不会进行与服务无关的追踪。"
+      },
+      "emailContent": {
+        "title": "3. 邮件内容",
+        "content": "发送到临时地址的邮件将按有效期策略存储，并在到期后自动删除。"
+      },
+      "thirdParty": {
+        "title": "4. 第三方服务",
+        "content": "我们可能使用必要的第三方基础设施（如云托管与安全服务）来保障系统运行。"
+      },
+      "contact": {
+        "title": "5. 联系我们",
+        "content": "如果你对隐私政策有疑问，请通过项目仓库与我们联系。"
+      }
+    }
+  },
+  "terms": {
+    "title": "服务条款",
+    "lastUpdated": "最后更新：2026年4月8日",
+    "sections": {
+      "acceptance": {
+        "title": "1. 接受条款",
+        "content": "访问和使用 TianMail 即表示你同意遵守本服务条款。"
+      },
+      "description": {
+        "title": "2. 服务说明",
+        "content": "TianMail 提供临时一次性邮箱服务，按“现状”提供，仅用于合法用途。"
+      },
+      "prohibited": {
+        "title": "3. 禁止使用",
+        "items": {
+          "1": "发送垃圾邮件或未经请求的邮件。",
+          "2": "用于任何违法活动。",
+          "3": "进行骚扰、滥用或恶意行为。"
+        }
+      },
+      "disclaimer": {
+        "title": "4. 免责声明",
+        "content": "我们不对服务持续可用性作绝对保证，临时邮件可能依据策略被删除。"
+      },
+      "changes": {
+        "title": "5. 条款变更",
+        "content": "我们保留在必要时更新本条款的权利。"
+      }
+    }
   }
 }
-

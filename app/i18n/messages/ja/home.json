@@ -22,6 +22,126 @@
   "actions": {
     "enterMailbox": "メールボックスに入る",
     "getStarted": "今すぐ始める"
+  },
+  "howToUse": {
+    "title": "使い方",
+    "steps": {
+      "register": {
+        "title": "アカウント登録",
+        "description": "個人ダッシュボードへ安全にアクセスするために登録します。"
+      },
+      "create": {
+        "title": "メール作成",
+        "description": "カスタムまたはランダムな一時メールアドレスをすぐに作成できます。"
+      },
+      "manage": {
+        "title": "メール管理",
+        "description": "ダッシュボードでメールをリアルタイムに受信・確認できます。"
+      },
+      "webhook": {
+        "title": "Webhooks",
+        "description": "新着メール到着時にサーバーへリアルタイム通知します。"
+      },
+      "openapi": {
+        "title": "OpenAPI",
+        "description": "標準REST APIで TianMail をあなたのアプリに統合できます。"
+      },
+      "share": {
+        "title": "共有機能",
+        "description": "単一メールまたはメールボックス全体を簡単に共有できます。"
+      }
+    }
+  },
+  "faq": {
+    "title": "よくある質問",
+    "items": {
+      "1": {
+        "question": "登録は必要ですか？",
+        "answer": "はい、一時メールボックスを安全に管理するには登録が必要です。"
+      },
+      "2": {
+        "question": "メールはどのくらい保存されますか？",
+        "answer": "メールは一時的に保存され、期限切れ後に自動的に削除されます。"
+      },
+      "3": {
+        "question": "メールを送信できますか？",
+        "answer": "適切な権限を持つユーザーは、メール送信機能を使用できます。"
+      },
+      "4": {
+        "question": "複数のメールボックスを持てますか？",
+        "answer": "はい、1つのアカウントで複数の一時メールアドレスを作成および管理できます。"
+      },
+      "5": {
+        "question": "OpenAPI にアクセスするには？",
+        "answer": "https://email.tianzora.uno/api.html#openapi で OpenAPI 定義にアクセスできます。認証にはプロフィールから API キーが必要です。"
+      }
+    }
+  },
+  "footer": {
+    "brand": "TianMail",
+    "copyright": "© 2026 TianMail. All rights reserved.",
+    "policy": {
+      "title": "プライバシーポリシー & 利用規約",
+      "privacy": "プライバシーポリシー",
+      "terms": "利用規約",
+      "openapi": "API ドキュメント"
+    },
+    "contact": "お問い合わせ"
+  },
+  "privacy": {
+    "title": "プライバシーポリシー",
+    "lastUpdated": "最終更新日: 2026年4月8日",
+    "sections": {
+      "introduction": {
+        "title": "1. はじめに",
+        "content": "TianMail へようこそ。私たちはプライバシーを尊重し、データ保護に努めます。"
+      },
+      "collection": {
+        "title": "2. 収集情報",
+        "content": "アカウント機能提供のため、ユーザー名やログイン識別子など最小限の情報のみ収集します。"
+      },
+      "emailContent": {
+        "title": "3. メール内容",
+        "content": "一時アドレス宛メールは有効期限設定に基づいて保存され、期限後に自動削除されます。"
+      },
+      "thirdParty": {
+        "title": "4. 第三者サービス",
+        "content": "サービス提供のため、クラウド基盤やセキュリティサービス等を利用する場合があります。"
+      },
+      "contact": {
+        "title": "5. お問い合わせ",
+        "content": "本ポリシーに関する質問は、プロジェクトリポジトリからご連絡ください。"
+      }
+    }
+  },
+  "terms": {
+    "title": "利用規約",
+    "lastUpdated": "最終更新日: 2026年4月8日",
+    "sections": {
+      "acceptance": {
+        "title": "1. 規約への同意",
+        "content": "TianMail にアクセス・利用することで、本規約に同意したものとみなします。"
+      },
+      "description": {
+        "title": "2. サービス内容",
+        "content": "TianMail は一時的な使い捨てメールアドレスを「現状有姿」で提供します。"
+      },
+      "prohibited": {
+        "title": "3. 禁止事項",
+        "items": {
+          "1": "スパムや迷惑メールの送信。",
+          "2": "違法行為への利用。",
+          "3": "嫌がらせ、悪用、または悪意ある行為。"
+        }
+      },
+      "disclaimer": {
+        "title": "4. 免責事項",
+        "content": "サービスの継続的可用性は保証しません。メールは方針に従い削除される場合があります。"
+      },
+      "changes": {
+        "title": "5. 規約変更",
+        "content": "必要に応じて本規約を更新する権利を留保します。"
+      }
+    }
   }
 }
-

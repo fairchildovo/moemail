@@ -22,5 +22,126 @@
   "actions": {
     "enterMailbox": "메일함 입장",
     "getStarted": "시작하기"
+  },
+  "howToUse": {
+    "title": "사용 방법",
+    "steps": {
+      "register": {
+        "title": "계정 등록",
+        "description": "개인 대시보드에 안전하게 접근하려면 계정을 생성하세요."
+      },
+      "create": {
+        "title": "메일함 생성",
+        "description": "커스텀 또는 랜덤 임시 이메일 주소를 즉시 생성하세요."
+      },
+      "manage": {
+        "title": "메일 관리",
+        "description": "대시보드에서 메일을 실시간으로 수신하고 확인하세요."
+      },
+      "webhook": {
+        "title": "Webhooks",
+        "description": "새 메일 도착 시 서버로 실시간 알림을 보냅니다."
+      },
+      "openapi": {
+        "title": "OpenAPI",
+        "description": "표준 REST API로 TianMail을 앱에 통합할 수 있습니다."
+      },
+      "share": {
+        "title": "공유 기능",
+        "description": "단일 메일 또는 전체 메일함을 쉽게 공유하세요."
+      }
+    }
+  },
+  "faq": {
+    "title": "자주 묻는 질문",
+    "items": {
+      "1": {
+        "question": "등록이 필요한가요?",
+        "answer": "네, 임시 메일함을 안전하게 관리하려면 등록이 필요합니다."
+      },
+      "2": {
+        "question": "이메일은 얼마나 보관되나요?",
+        "answer": "이메일은 임시로 저장되며 만료 후 자동으로 삭제됩니다."
+      },
+      "3": {
+        "question": "이메일을 보낼 수 있나요?",
+        "answer": "적절한 권한을 가진 사용자는 이메일 전송 기능을 사용할 수 있습니다."
+      },
+      "4": {
+        "question": "여러 개의 메일함을 가질 수 있나요?",
+        "answer": "네, 하나의 계정에서 여러 임시 이메일 주소를 생성하고 관리할 수 있습니다."
+      },
+      "5": {
+        "question": "OpenAPI에 어떻게 액세스하나요?",
+        "answer": "https://email.tianzora.uno/api.html#openapi에서 OpenAPI 정의에 액세스할 수 있습니다. 인증에는 프로필의 API 키가 필요합니다."
+      }
+    }
+  },
+  "footer": {
+    "brand": "TianMail",
+    "copyright": "© 2026 TianMail. All rights reserved.",
+    "policy": {
+      "title": "개인정보 처리방침 & 이용약관",
+      "privacy": "개인정보 처리방침",
+      "terms": "이용약관",
+      "openapi": "API 문서"
+    },
+    "contact": "연락처"
+  },
+  "privacy": {
+    "title": "개인정보 처리방침",
+    "lastUpdated": "최종 업데이트: 2026년 4월 8일",
+    "sections": {
+      "introduction": {
+        "title": "1. 소개",
+        "content": "TianMail에 오신 것을 환영합니다. 우리는 사용자의 개인정보를 존중하며 데이터 보호를 위해 노력합니다."
+      },
+      "collection": {
+        "title": "2. 정보 수집",
+        "content": "계정 기능 제공을 위해 사용자명 및 로그인 식별자 등 최소한의 정보만 수집합니다."
+      },
+      "emailContent": {
+        "title": "3. 이메일 콘텐츠",
+        "content": "임시 주소로 수신된 메일은 유효기간 정책에 따라 저장되며 만료 후 자동 삭제됩니다."
+      },
+      "thirdParty": {
+        "title": "4. 제3자 서비스",
+        "content": "서비스 운영을 위해 클라우드 인프라 및 보안 서비스 등 필수 제3자 서비스를 사용할 수 있습니다."
+      },
+      "contact": {
+        "title": "5. 문의",
+        "content": "본 정책 관련 문의는 프로젝트 저장소를 통해 연락해 주세요."
+      }
+    }
+  },
+  "terms": {
+    "title": "이용약관",
+    "lastUpdated": "최종 업데이트: 2026년 4월 8일",
+    "sections": {
+      "acceptance": {
+        "title": "1. 약관 동의",
+        "content": "TianMail에 접근하고 사용하는 것은 본 약관에 동의함을 의미합니다."
+      },
+      "description": {
+        "title": "2. 서비스 설명",
+        "content": "TianMail은 임시 일회용 이메일 주소를 \"있는 그대로\" 합법적인 용도로 제공합니다."
+      },
+      "prohibited": {
+        "title": "3. 금지된 사용",
+        "items": {
+          "1": "스팸 또는 원치 않는 메시지 발송.",
+          "2": "불법 활동에 서비스 사용.",
+          "3": "괴롭힘, 남용 또는 악의적 행위."
+        }
+      },
+      "disclaimer": {
+        "title": "4. 면책 조항",
+        "content": "서비스의 중단 없는 가용성을 보장하지 않습니다. 임시 메시지는 정책에 따라 삭제될 수 있습니다."
+      },
+      "changes": {
+        "title": "5. 약관 변경",
+        "content": "필요 시 본 약관을 업데이트할 권리를 보유합니다."
+      }
+    }
   }
 }

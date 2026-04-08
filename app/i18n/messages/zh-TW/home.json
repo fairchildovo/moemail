@@ -22,6 +22,126 @@
   "actions": {
     "enterMailbox": "進入郵箱",
     "getStarted": "開始使用"
+  },
+  "howToUse": {
+    "title": "如何使用",
+    "steps": {
+      "register": {
+        "title": "註冊帳號",
+        "description": "建立帳號以安全地存取你的個人控制台。"
+      },
+      "create": {
+        "title": "建立郵箱",
+        "description": "立即產生自訂或隨機的臨時郵箱地址。"
+      },
+      "manage": {
+        "title": "管理郵件",
+        "description": "在控制台中即時接收並查看你的郵件。"
+      },
+      "webhook": {
+        "title": "Webhooks",
+        "description": "當郵件到達時，即時通知你的伺服器。"
+      },
+      "openapi": {
+        "title": "OpenAPI",
+        "description": "使用標準 REST API 將 TianMail 整合到你的應用。"
+      },
+      "share": {
+        "title": "分享功能",
+        "description": "輕鬆分享單封郵件或整個郵箱。"
+      }
+    }
+  },
+  "faq": {
+    "title": "常見問題",
+    "items": {
+      "1": {
+        "question": "我需要註冊嗎？",
+        "answer": "是的，為了安全地管理您的臨時郵箱，需要註冊帳號。"
+      },
+      "2": {
+        "question": "郵件會儲存多久？",
+        "answer": "郵件會暫時儲存，並在過期後自動刪除。"
+      },
+      "3": {
+        "question": "我可以傳送郵件嗎？",
+        "answer": "擁有相應權限的使用者可以使用傳送郵件功能。"
+      },
+      "4": {
+        "question": "我可以擁有多個郵箱嗎？",
+        "answer": "是的，您可以在一個帳號下建立並管理多個臨時郵箱地址。"
+      },
+      "5": {
+        "question": "如何存取 OpenAPI？",
+        "answer": "您可以存取 https://email.tianzora.uno/api.html#openapi 檢視 OpenAPI 文件。認證需要使用個人資料中的 API 金鑰。"
+      }
+    }
+  },
+  "footer": {
+    "brand": "TianMail",
+    "copyright": "© 2026 TianMail. 保留所有權利。",
+    "policy": {
+      "title": "隱私政策 & 服務條款",
+      "privacy": "隱私政策",
+      "terms": "服務條款",
+      "openapi": "API 文件"
+    },
+    "contact": "聯絡方式"
+  },
+  "privacy": {
+    "title": "隱私政策",
+    "lastUpdated": "最後更新：2026年4月8日",
+    "sections": {
+      "introduction": {
+        "title": "1. 簡介",
+        "content": "歡迎使用 TianMail。我們重視你的隱私，並致力於保護你的資料安全。"
+      },
+      "collection": {
+        "title": "2. 資訊收集",
+        "content": "為提供帳號功能，我們僅收集最少必要資訊，例如使用者名稱與登入識別。"
+      },
+      "emailContent": {
+        "title": "3. 郵件內容",
+        "content": "寄送到臨時地址的郵件會依有效期策略儲存，並在到期後自動刪除。"
+      },
+      "thirdParty": {
+        "title": "4. 第三方服務",
+        "content": "我們可能使用必要的第三方基礎設施（如雲端託管與安全服務）以維持系統運作。"
+      },
+      "contact": {
+        "title": "5. 聯絡我們",
+        "content": "若你對本政策有疑問，請透過專案倉庫與我們聯繫。"
+      }
+    }
+  },
+  "terms": {
+    "title": "服務條款",
+    "lastUpdated": "最後更新：2026年4月8日",
+    "sections": {
+      "acceptance": {
+        "title": "1. 接受條款",
+        "content": "使用 TianMail 即表示你同意遵守本服務條款。"
+      },
+      "description": {
+        "title": "2. 服務說明",
+        "content": "TianMail 提供臨時一次性郵箱服務，按「現狀」提供，僅可用於合法用途。"
+      },
+      "prohibited": {
+        "title": "3. 禁止使用",
+        "items": {
+          "1": "發送垃圾郵件或未經請求的訊息。",
+          "2": "用於任何違法活動。",
+          "3": "進行騷擾、濫用或惡意行為。"
+        }
+      },
+      "disclaimer": {
+        "title": "4. 免責聲明",
+        "content": "我們不保證服務持續可用，臨時郵件可能依策略被刪除。"
+      },
+      "changes": {
+        "title": "5. 條款變更",
+        "content": "我們保留在必要時更新本條款的權利。"
+      }
+    }
   }
 }
-

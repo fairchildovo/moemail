@@ -1,0 +1,574 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TianMail API 文档</title>
+  <meta name="description" content="TianMail API 文档，包含 Webhook 集成与 OpenAPI 说明。" />
+  <script>
+    !function () {
+      try {
+        var d = document.documentElement;
+        var c = d.classList;
+        c.remove("light", "dark");
+        var e = localStorage.getItem("temp-mail-theme");
+        if (e === "system" || !e) {
+          var m = window.matchMedia("(prefers-color-scheme: dark)");
+          if (m.matches) {
+            d.style.colorScheme = "dark";
+            c.add("dark");
+          } else {
+            d.style.colorScheme = "light";
+            c.add("light");
+          }
+        } else {
+          c.add(e);
+          if (e === "light" || e === "dark") d.style.colorScheme = e;
+        }
+      } catch (_) {}
+    }();
+  </script>
+  <style>
+    :root {
+      --background: 255 255 255;
+      --foreground: 10 10 10;
+      --card: 255 255 255;
+      --muted: 115 115 115;
+      --border: 229 231 235;
+      --primary: 0 0 0;
+      --ring: 0 0 0;
+      --code-bg: 15 23 42;
+      --code-ink: 226 232 240;
+    }
+    .dark {
+      --background: 15 23 42;
+      --foreground: 245 245 245;
+      --card: 17 24 39;
+      --muted: 156 163 175;
+      --border: 55 65 81;
+      --primary: 232 232 232;
+      --ring: 232 232 232;
+      --code-bg: 2 6 23;
+      --code-ink: 226 232 240;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: auto; }
+    body {
+      margin: 0;
+      color: rgb(var(--foreground));
+      background:
+        linear-gradient(to bottom, rgb(249 250 251), rgb(243 244 246));
+      font-family: "Segoe UI", "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
+      line-height: 1.72;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .dark body {
+      background: linear-gradient(to bottom, rgb(17 24 39), rgb(31 41 55));
+    }
+    .page-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: .35;
+    }
+    .dark .page-grid {
+      background-image:
+        linear-gradient(rgba(245, 245, 245, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 245, 245, 0.08) 1px, transparent 1px);
+      opacity: .24;
+    }
+    .page-glow {
+      position: fixed;
+      width: 520px;
+      height: 520px;
+      left: 50%;
+      top: 36%;
+      transform: translate(-50%, -50%);
+      border-radius: 9999px;
+      background: rgba(0, 0, 0, .12);
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+      animation: pulse 3.2s ease-in-out infinite;
+    }
+    .dark .page-glow { background: rgba(255, 255, 255, .10); }
+    .wrap {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 20px 16px 60px;
+      position: relative;
+      z-index: 1;
+    }
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      height: 64px;
+      padding: 0 14px;
+      border: 1px solid rgba(var(--border), .55);
+      border-radius: 14px;
+      background: rgba(var(--background), .82);
+      backdrop-filter: blur(10px);
+    }
+    .brand {
+      font-weight: 700;
+      letter-spacing: .02em;
+      font-size: clamp(18px, 2vw, 24px);
+      background: linear-gradient(90deg, rgb(var(--primary)) 0%, rgb(var(--foreground)) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .nav { display: flex; gap: 10px; flex-wrap: wrap; }
+    .nav a {
+      text-decoration: none;
+      border: 1px solid rgba(var(--border), .9);
+      color: rgb(var(--foreground));
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      background: rgba(var(--card), .55);
+      transition: transform .18s ease, border-color .18s ease, background-color .18s ease;
+    }
+    .nav a.is-active {
+      border-color: rgba(var(--primary), .45);
+      background: rgba(var(--primary), .1);
+    }
+    .nav a:hover { transform: translateY(-1px); border-color: rgba(var(--primary), .35); background: rgba(var(--card), .9); }
+    .doc {
+      border-radius: 18px;
+      padding: clamp(16px, 2.3vw, 30px);
+      border: 1px solid rgba(var(--primary), .16);
+      background: rgba(var(--card), .58);
+      backdrop-filter: blur(2px);
+    }
+    .vp-doc { max-width: 980px; margin: 0 auto; }
+    h2, h3, h4 { scroll-margin-top: 96px; color: rgb(var(--foreground)); }
+    h2 {
+      margin: 28px 0 14px;
+      font-size: clamp(24px, 3.1vw, 34px);
+      border-left: 4px solid rgba(var(--primary), .45);
+      padding-left: 12px;
+    }
+    h3 { margin: 24px 0 12px; font-size: clamp(18px, 2.2vw, 24px); }
+    h4 { margin: 20px 0 10px; font-size: clamp(16px, 1.8vw, 20px); }
+    p, li { color: rgba(var(--foreground), .86); }
+    ul, ol { padding-left: 24px; }
+    p code, li code {
+      background: rgba(var(--primary), .08);
+      border: 1px solid rgba(var(--primary), .2);
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: .92em;
+      color: rgb(var(--foreground));
+    }
+    .language-http, .language-json, .language-bash, .language-javascript {
+      margin: 14px 0 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(var(--border), .9);
+      background: rgb(10 10 10);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 8px 20px rgba(0, 0, 0, 0.24);
+      position: relative;
+    }
+    .language-http::before, .language-json::before, .language-bash::before, .language-javascript::before {
+      content: "";
+      display: block;
+      height: 34px;
+      background: rgb(20 20 20);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .lang {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 0 16px;
+      min-width: 72px;
+      color: rgb(229 229 229);
+      background: rgb(34 34 34);
+      border-right: 1px solid rgba(255, 255, 255, 0.14);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0 0 10px 0;
+    }
+    .copy {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      height: 24px;
+      width: 24px;
+      display: inline-grid;
+      place-items: center;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      color: rgb(229 229 229);
+      background: transparent;
+      font-size: 0;
+      font-weight: 600;
+      line-height: 1;
+      cursor: pointer;
+      transition: color .16s ease, opacity .16s ease, transform .16s ease;
+      opacity: .82;
+    }
+    .copy::before {
+      content: "";
+      width: 15px;
+      height: 15px;
+      display: block;
+      background: currentColor;
+      -webkit-mask: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.8' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M15.75 17.25v3a1.5 1.5 0 0 1-1.5 1.5h-9a1.5 1.5 0 0 1-1.5-1.5v-9a1.5 1.5 0 0 1 1.5-1.5h3'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9.75 14.25h9a1.5 1.5 0 0 0 1.5-1.5v-9a1.5 1.5 0 0 0-1.5-1.5h-9a1.5 1.5 0 0 0-1.5 1.5v9a1.5 1.5 0 0 0 1.5 1.5Z'/%3E%3C/svg%3E");
+      mask: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.8' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M15.75 17.25v3a1.5 1.5 0 0 1-1.5 1.5h-9a1.5 1.5 0 0 1-1.5-1.5v-9a1.5 1.5 0 0 1 1.5-1.5h3'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9.75 14.25h9a1.5 1.5 0 0 0 1.5-1.5v-9a1.5 1.5 0 0 0-1.5-1.5h-9a1.5 1.5 0 0 0-1.5 1.5v9a1.5 1.5 0 0 0 1.5 1.5Z'/%3E%3C/svg%3E");
+    }
+    .copy:hover {
+      opacity: 1;
+      color: rgb(245 245 245);
+      transform: translateY(-1px);
+    }
+    .copy.copied {
+      color: rgb(245 245 245);
+      opacity: 1;
+    }
+    .copy.copied::before {
+      content: "";
+      width: 15px;
+      height: 15px;
+      display: block;
+      background: currentColor;
+      -webkit-mask: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m5 13 4 4L19 7'/%3E%3C/svg%3E");
+      mask: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m5 13 4 4L19 7'/%3E%3C/svg%3E");
+    }
+    pre {
+      margin: 0;
+      overflow: auto;
+      border: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0;
+      background: rgb(10 10 10);
+      color: rgb(229 231 235);
+      padding: 16px 14px 14px;
+      line-height: 1.55;
+    }
+    pre a {
+      pointer-events: none !important;
+      cursor: default !important;
+      color: inherit !important;
+      text-decoration: none !important;
+    }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    .header-anchor {
+      text-decoration: none;
+      margin-left: 6px;
+      opacity: .4;
+      transition: opacity .2s ease;
+    }
+    .header-anchor:hover { opacity: 1; }
+    .header-anchor:focus-visible, a:focus-visible {
+      outline: 2px solid #60a5fa;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+    a { color: rgb(var(--foreground)); }
+    a:hover { opacity: .78; }
+    @media (max-width: 760px) {
+      .top { top: 8px; padding: 10px; }
+      .brand { font-size: 18px; }
+      .nav a { font-size: 12px; padding: 6px 10px; }
+      .doc { border-radius: 14px; padding: 14px; }
+      h2 { padding-left: 9px; border-left-width: 3px; }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: .8; }
+      50% { transform: translate(-50%, -50%) scale(1.04); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-grid"></div>
+  <div class="page-glow"></div>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">TianMail API 文档</div>
+      <div class="nav">
+        <a href="#webhook" data-scroll-link="webhook">Webhook</a>
+        <a href="#openapi" data-scroll-link="openapi">OpenAPI</a>
+      </div>
+    </div>
+    <article class="doc">
+      <div style="position:relative;" class="vp-doc _api" data-v-e6f2a212><div><h2 id="webhook" tabindex="-1">Webhook 集成 <a class="header-anchor" href="#webhook" aria-label="Permalink to &quot;Webhook 集成&quot;">​</a></h2><p>当收到新邮件时，系统会向用户配置并且已启用的 Webhook URL 发送 POST 请求。</p><h3 id="请求头" tabindex="-1">请求头 <a class="header-anchor" href="#请求头" aria-label="Permalink to &quot;请求头&quot;">​</a></h3><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">Content-Type</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> application/json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">X-Webhook-Event</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> new_message</span></span></code></pre></div><h3 id="请求体" tabindex="-1">请求体 <a class="header-anchor" href="#请求体" aria-label="Permalink to &quot;请求体&quot;">​</a></h3><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;emailId&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;email-uuid&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;messageId&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;message-uuid&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;fromAddress&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;<a href="https://docs.email.tianzroa.uno/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="196a7c777d7c6b597c61787469757c377a7674">[email&#160;protected]</a>&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;subject&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;邮件主题&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;content&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;邮件文本内容&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;html&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;邮件HTML内容&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;receivedAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-01T12:00:00.000Z&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;toAddress&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;<a href="https://docs.email.tianzroa.uno/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2b52445e59064e464a42476b46444e464a4247054a5b5b">[email&#160;protected]</a>&quot;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><h3 id="配置说明" tabindex="-1">配置说明 <a class="header-anchor" href="#配置说明" aria-label="Permalink to &quot;配置说明&quot;">​</a></h3><ol><li>点击个人头像，进入个人中心</li><li>在个人中心启用 Webhook</li><li>设置接收通知的 URL</li><li>点击测试按钮验证配置</li><li>保存配置后即可接收新邮件通知</li></ol><h3 id="测试" tabindex="-1">测试 <a class="header-anchor" href="#测试" aria-label="Permalink to &quot;测试&quot;">​</a></h3><p>项目提供了一个简单的测试服务器, 可以通过如下命令运行:</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">pnpm</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> webhook-test-server</span></span></code></pre></div><p>测试服务器会在本地启动一个 HTTP 服务器，监听 3001 端口（<a href="http://localhost:3001" target="_blank" rel="noreferrer">http://localhost:3001</a>）, 并打印收到的 Webhook 消息详情。</p><p>如果需要进行外网测试，可以通过 Cloudflare Tunnel 将服务暴露到外网：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">pnpx</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> cloudflared</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> tunnel</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --url</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> http://localhost:3001</span></span></code></pre></div><h3 id="注意事项" tabindex="-1">注意事项 <a class="header-anchor" href="#注意事项" aria-label="Permalink to &quot;注意事项&quot;">​</a></h3><ul><li>Webhook 接口应在 10 秒内响应</li><li>非 2xx 响应码会触发重试</li></ul><h2 id="openapi" tabindex="-1">OpenAPI <a class="header-anchor" href="#openapi" aria-label="Permalink to &quot;OpenAPI&quot;">​</a></h2><p>本项目提供了 OpenAPI 接口，支持通过 API Key 进行访问。API Key 可以在个人中心页面创建（需要是公爵或皇帝角色）。</p><h3 id="使用-api-key" tabindex="-1">使用 API Key <a class="header-anchor" href="#使用-api-key" aria-label="Permalink to &quot;使用 API Key&quot;">​</a></h3><p>在请求头中添加 API Key：</p><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">X-API-Key</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> YOUR_API_KEY</span></span></code></pre></div><h3 id="api-接口" tabindex="-1">API 接口 <a class="header-anchor" href="#api-接口" aria-label="Permalink to &quot;API 接口&quot;">​</a></h3><h4 id="获取系统配置" tabindex="-1">获取系统配置 <a class="header-anchor" href="#获取系统配置" aria-label="Permalink to &quot;获取系统配置&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">GET</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/config</span></span></code></pre></div><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;defaultRole&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;CIVILIAN&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;emailDomains&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;email.tianzroa.uno,example.com&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;adminContact&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;<a href="https://docs.email.tianzroa.uno/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="640500090d0a24011c05091408014a070b09">[email&#160;protected]</a>&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;maxEmails&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;10&quot;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>defaultRole</code>: 新用户默认角色，可选值：<code>CIVILIAN</code>（平民）、<code>KNIGHT</code>（骑士）、<code>DUKE</code>（公爵）</li><li><code>emailDomains</code>: 支持的邮箱域名，多个域名用逗号分隔</li><li><code>adminContact</code>: 管理员联系方式</li><li><code>maxEmails</code>: 每个用户可创建的最大邮箱数量</li></ul><h4 id="创建临时邮箱" tabindex="-1">创建临时邮箱 <a class="header-anchor" href="#创建临时邮箱" aria-label="Permalink to &quot;创建临时邮箱&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">POST</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails/generate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">Content-Type</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> application/json</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;name&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;test&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;expiryTime&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">3600000</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;domain&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;email.tianzroa.uno&quot;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>参数说明：</p><ul><li><code>name</code>: 邮箱前缀，可选</li><li><code>expiryTime</code>: 有效期（毫秒），可选值：3600000（1小时）、86400000（1天）、604800000（7天）、0（永久）</li><li><code>domain</code>: 邮箱域名，可通过 <code>/api/config</code> 接口获取</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;id&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;email-uuid-123&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;email&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;<a href="https://docs.email.tianzroa.uno/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="98ecfdebecd8f5f7fdf5f9f1f4b6f9e8e8">[email&#160;protected]</a>&quot;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>id</code>: 邮箱的唯一标识符</li><li><code>email</code>: 创建的邮箱地址</li></ul><h4 id="获取邮箱列表" tabindex="-1">获取邮箱列表 <a class="header-anchor" href="#获取邮箱列表" aria-label="Permalink to &quot;获取邮箱列表&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">GET</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails?cursor=xxx</span></span></code></pre></div><p>参数说明：</p><ul><li><code>cursor</code>: 分页游标，可选</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;emails&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: [</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    {</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;id&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;email-uuid-123&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;address&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;<a href="https://docs.email.tianzroa.uno/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4c38293f380c212329212d2520622d3c3c">[email&#160;protected]</a>&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;createdAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-01T12:00:00.000Z&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;expiresAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-02T12:00:00.000Z&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;userId&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;user-uuid-456&quot;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  ],</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;nextCursor&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;encoded-cursor-string&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;total&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">5</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>emails</code>: 邮箱列表数组</li><li><code>nextCursor</code>: 下一页游标，用于分页请求</li><li><code>total</code>: 邮箱总数量</li></ul><h4 id="获取指定邮箱邮件列表" tabindex="-1">获取指定邮箱邮件列表 <a class="header-anchor" href="#获取指定邮箱邮件列表" aria-label="Permalink to &quot;获取指定邮箱邮件列表&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">GET</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails/{emailId}?cursor=xxx</span></span></code></pre></div><p>参数说明：</p><ul><li><code>emailId</code>: 邮箱的唯一标识符，必填</li><li><code>cursor</code>: 分页游标，可选</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;messages&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: [</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    {</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;id&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;message-uuid-789&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;from_address&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;<a href="https://docs.email.tianzroa.uno/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9deef8f3f9f8efddf8e5fcf0edf1f8b3fef2f0">[email&#160;protected]</a>&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;subject&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;邮件主题&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;received_at&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">1704110400000</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  ],</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;nextCursor&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;encoded-cursor-string&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;total&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">3</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>messages</code>: 邮件列表数组</li><li><code>nextCursor</code>: 下一页游标，用于分页请求</li><li><code>total</code>: 邮件总数量</li></ul><h4 id="删除邮箱" tabindex="-1">删除邮箱 <a class="header-anchor" href="#删除邮箱" aria-label="Permalink to &quot;删除邮箱&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">DELETE</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails/{emailId}</span></span></code></pre></div><p>参数说明：</p><ul><li><code>emailId</code>: 邮箱的唯一标识符，必填</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;success&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">true</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>success</code>: 删除操作是否成功</li></ul><h4 id="获取单封邮件内容" tabindex="-1">获取单封邮件内容 <a class="header-anchor" href="#获取单封邮件内容" aria-label="Permalink to &quot;获取单封邮件内容&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">GET</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails/{emailId}/{messageId}</span></span></code></pre></div><p>参数说明：</p><ul><li><code>emailId</code>: 邮箱的唯一标识符，必填</li><li><code>messageId</code>: 邮件的唯一标识符，必填</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;message&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: {</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    &quot;id&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;message-uuid-789&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    &quot;from_address&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;<a href="https://docs.email.tianzroa.uno/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d4a7b1bab0b1a694b1acb5b9a4b8b1fab7bbb9">[email&#160;protected]</a>&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    &quot;subject&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;邮件主题&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    &quot;content&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;邮件文本内容&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    &quot;html&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;&lt;p&gt;邮件HTML内容&lt;/p&gt;&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    &quot;received_at&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">1704110400000</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>message</code>: 邮件详细信息对象</li><li><code>id</code>: 邮件的唯一标识符</li><li><code>from_address</code>: 发件人邮箱地址</li><li><code>subject</code>: 邮件主题</li><li><code>content</code>: 邮件纯文本内容</li><li><code>html</code>: 邮件 HTML 内容</li><li><code>received_at</code>: 接收时间（时间戳）</li></ul><h4 id="创建邮箱分享链接" tabindex="-1">创建邮箱分享链接 <a class="header-anchor" href="#创建邮箱分享链接" aria-label="Permalink to &quot;创建邮箱分享链接&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">POST</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails/{emailId}/share</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">Content-Type</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> application/json</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;expiresIn&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">86400000</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>参数说明：</p><ul><li><code>emailId</code>: 邮箱的唯一标识符，必填</li><li><code>expiresIn</code>: 分享链接有效期（毫秒），0 表示永久有效，可选</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;id&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;share-uuid-123&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;emailId&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;email-uuid-123&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;token&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;abc123def456&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;expiresAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-02T12:00:00.000Z&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;createdAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-01T12:00:00.000Z&quot;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>id</code>: 分享记录的唯一标识符</li><li><code>emailId</code>: 关联的邮箱 ID</li><li><code>token</code>: 分享链接的访问令牌</li><li><code>expiresAt</code>: 分享链接过期时间，null 表示永久有效</li><li><code>createdAt</code>: 创建时间</li></ul><p>分享链接访问地址：<code>https://your-domain.com/shared/{token}</code></p><h4 id="获取邮箱的所有分享链接" tabindex="-1">获取邮箱的所有分享链接 <a class="header-anchor" href="#获取邮箱的所有分享链接" aria-label="Permalink to &quot;获取邮箱的所有分享链接&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">GET</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails/{emailId}/share</span></span></code></pre></div><p>参数说明：</p><ul><li><code>emailId</code>: 邮箱的唯一标识符，必填</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;shares&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: [</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    {</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;id&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;share-uuid-123&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;emailId&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;email-uuid-123&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;token&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;abc123def456&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;expiresAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-02T12:00:00.000Z&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;createdAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-01T12:00:00.000Z&quot;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  ],</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;total&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">1</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>shares</code>: 分享链接列表数组</li><li><code>total</code>: 分享链接总数</li></ul><h4 id="删除邮箱分享链接" tabindex="-1">删除邮箱分享链接 <a class="header-anchor" href="#删除邮箱分享链接" aria-label="Permalink to &quot;删除邮箱分享链接&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">DELETE</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails/{emailId}/share/{shareId}</span></span></code></pre></div><p>参数说明：</p><ul><li><code>emailId</code>: 邮箱的唯一标识符，必填</li><li><code>shareId</code>: 分享记录的唯一标识符，必填</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;success&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">true</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>success</code>: 删除操作是否成功</li></ul><h4 id="创建邮件分享链接" tabindex="-1">创建邮件分享链接 <a class="header-anchor" href="#创建邮件分享链接" aria-label="Permalink to &quot;创建邮件分享链接&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">POST</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails/{emailId}/messages/{messageId}/share</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">Content-Type</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> application/json</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;expiresIn&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">86400000</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>参数说明：</p><ul><li><code>emailId</code>: 邮箱的唯一标识符，必填</li><li><code>messageId</code>: 邮件的唯一标识符，必填</li><li><code>expiresIn</code>: 分享链接有效期（毫秒），0 表示永久有效，可选</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;id&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;share-uuid-456&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;messageId&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;message-uuid-789&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;token&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;xyz789ghi012&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;expiresAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-02T12:00:00.000Z&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;createdAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-01T12:00:00.000Z&quot;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>id</code>: 分享记录的唯一标识符</li><li><code>messageId</code>: 关联的邮件 ID</li><li><code>token</code>: 分享链接的访问令牌</li><li><code>expiresAt</code>: 分享链接过期时间，null 表示永久有效</li><li><code>createdAt</code>: 创建时间</li></ul><p>分享链接访问地址：<code>https://your-domain.com/shared/message/{token}</code></p><h4 id="获取邮件的所有分享链接" tabindex="-1">获取邮件的所有分享链接 <a class="header-anchor" href="#获取邮件的所有分享链接" aria-label="Permalink to &quot;获取邮件的所有分享链接&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">GET</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails/{emailId}/messages/{messageId}/share</span></span></code></pre></div><p>参数说明：</p><ul><li><code>emailId</code>: 邮箱的唯一标识符，必填</li><li><code>messageId</code>: 邮件的唯一标识符，必填</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;shares&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: [</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    {</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;id&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;share-uuid-456&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;messageId&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;message-uuid-789&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;token&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;xyz789ghi012&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;expiresAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-02T12:00:00.000Z&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">      &quot;createdAt&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;2024-01-01T12:00:00.000Z&quot;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  ],</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;total&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">1</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>shares</code>: 分享链接列表数组</li><li><code>total</code>: 分享链接总数</li></ul><h4 id="删除邮件分享链接" tabindex="-1">删除邮件分享链接 <a class="header-anchor" href="#删除邮件分享链接" aria-label="Permalink to &quot;删除邮件分享链接&quot;">​</a></h4><div class="language-http vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">http</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">DELETE</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> /api/emails/{emailId}/messages/{messageId}/share/{shareId}</span></span></code></pre></div><p>参数说明：</p><ul><li><code>emailId</code>: 邮箱的唯一标识符，必填</li><li><code>messageId</code>: 邮件的唯一标识符，必填</li><li><code>shareId</code>: 分享记录的唯一标识符，必填</li></ul><p>返回响应：</p><div class="language-json vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">json</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  &quot;success&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">true</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>响应字段说明：</p><ul><li><code>success</code>: 删除操作是否成功</li></ul><h3 id="使用示例" tabindex="-1">使用示例 <a class="header-anchor" href="#使用示例" aria-label="Permalink to &quot;使用示例&quot;">​</a></h3><p>使用 curl 创建临时邮箱：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">curl</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -X</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> POST</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> https://your-domain.com/api/emails/generate</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> \</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  -H</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;X-API-Key: YOUR_API_KEY&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> \</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  -H</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;Content-Type: application/json&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> \</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  -d</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;{</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    &quot;name&quot;: &quot;test&quot;,</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    &quot;expiryTime&quot;: 3600000,</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    &quot;domain&quot;: &quot;email.tianzroa.uno&quot;</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">  }&#39;</span></span></code></pre></div><p>使用 JavaScript 获取邮件列表：</p><div class="language-javascript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">javascript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> res</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> await</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> fetch</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;https://your-domain.com/api/emails/your-email-id&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  headers: {</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    &#39;X-API-Key&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;YOUR_API_KEY&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">});</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> data</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> await</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> res.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">json</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span></code></pre></div><p>使用 curl 创建邮箱分享链接：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">curl</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -X</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> POST</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> https://your-domain.com/api/emails/your-email-id/share</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> \</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  -H</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;X-API-Key: YOUR_API_KEY&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> \</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  -H</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;Content-Type: application/json&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> \</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  -d</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;{</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    &quot;expiresIn&quot;: 86400000</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">  }&#39;</span></span></code></pre></div><p>使用 JavaScript 创建邮件分享链接：</p><div class="language-javascript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">javascript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> res</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> await</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> fetch</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;https://your-domain.com/api/emails/your-email-id/messages/your-message-id/share&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  method: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;POST&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  headers: {</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    &#39;X-API-Key&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;YOUR_API_KEY&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    &#39;Content-Type&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;application/json&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  },</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  body: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">JSON</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">stringify</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">({</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    expiresIn: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">0</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">  // 永久有效</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  })</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">});</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> data</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> await</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> res.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">json</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">console.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">log</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;分享链接:&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">`https://your-domain.com/shared/message/${</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">data</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">token</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}`</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span></code></pre></div></div></div>
+    </article>
+  </div>
+  <script>
+    (function () {
+      function normalizedId(raw) {
+        return raw === "webhook-集成" ? "webhook" : raw;
+      }
+
+      function scrollToId(id, behavior) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var topOffset = 92;
+        var y = el.getBoundingClientRect().top + window.pageYOffset - topOffset;
+        window.scrollTo({ top: Math.max(0, y), behavior: behavior || "smooth" });
+      }
+
+      function setActive(id) {
+        var links = document.querySelectorAll("[data-scroll-link]");
+        links.forEach(function (a) {
+          a.classList.toggle("is-active", a.getAttribute("data-scroll-link") === id);
+        });
+      }
+
+      function updateActiveByScroll() {
+        var webhook = document.getElementById("webhook");
+        var openapi = document.getElementById("openapi");
+        if (!webhook || !openapi) return;
+
+        var triggerY = 120;
+        var webhookTop = webhook.getBoundingClientRect().top;
+        var openapiTop = openapi.getBoundingClientRect().top;
+
+        // Before reaching OpenAPI section, keep Webhook active.
+        // Once OpenAPI title crosses trigger line, switch highlight.
+        if (openapiTop <= triggerY) setActive("openapi");
+        else if (webhookTop <= triggerY) setActive("webhook");
+        else setActive("webhook");
+      }
+
+      document.querySelectorAll("[data-scroll-link]").forEach(function (a) {
+        a.addEventListener("click", function (e) {
+          e.preventDefault();
+          var id = normalizedId(a.getAttribute("data-scroll-link") || "");
+          if (!id) return;
+          history.replaceState(null, "", "#" + id);
+          setActive(id);
+          scrollToId(id, "smooth");
+        });
+      });
+
+      var ticking = false;
+      window.addEventListener("scroll", function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          updateActiveByScroll();
+          ticking = false;
+        });
+      }, { passive: true });
+
+      if (location.hash) {
+        var id = normalizedId(decodeURIComponent(location.hash.slice(1)));
+        history.replaceState(null, "", "#" + id);
+        setActive(id);
+        scrollToId(id, "auto");
+      } else {
+        setActive("webhook");
+      }
+
+      updateActiveByScroll();
+
+      function getCodeText(container) {
+        var code = container.querySelector("pre code");
+        if (!code) return "";
+        return code.innerText.replace(/\n+$/, "");
+      }
+
+      document.querySelectorAll(".language-http, .language-json, .language-bash, .language-javascript").forEach(function (box) {
+        var btn = box.querySelector("button.copy");
+        if (!btn) return;
+
+        btn.setAttribute("type", "button");
+        btn.setAttribute("aria-label", "复制代码");
+        btn.setAttribute("title", "复制代码");
+        btn.textContent = "";
+
+        btn.addEventListener("click", async function () {
+          var text = getCodeText(box);
+          if (!text) return;
+          try {
+            await navigator.clipboard.writeText(text);
+            btn.classList.add("copied");
+            btn.setAttribute("aria-label", "已复制");
+            btn.setAttribute("title", "已复制");
+          } catch (_) {
+            btn.classList.remove("copied");
+            btn.setAttribute("aria-label", "复制失败");
+            btn.setAttribute("title", "复制失败");
+          }
+          setTimeout(function () {
+            btn.classList.remove("copied");
+            btn.setAttribute("aria-label", "复制代码");
+            btn.setAttribute("title", "复制代码");
+          }, 1400);
+        });
+      });
+
+      // Replace hyperlink nodes inside code blocks with plain text to fully disable links.
+      document.querySelectorAll("pre code a").forEach(function (a) {
+        var text = a.textContent || a.innerText || "";
+        var span = document.createElement("span");
+        span.textContent = text;
+        a.replaceWith(span);
+      });
+    })();
+  </script>
+</body>
+</html>

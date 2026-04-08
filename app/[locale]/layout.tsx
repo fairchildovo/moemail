@@ -138,10 +138,13 @@ export default async function LocaleLayout({
           storageKey="temp-mail-theme"
         >
           <Providers>
-            <NextIntlClientProvider locale={locale} messages={messages}>
-              {children}
-              <FloatMenu />
-            </NextIntlClientProvider>
+            <div className="fixed inset-0 pointer-events-none z-0 bg-grid-primary/10 opacity-30 dark:opacity-20" aria-hidden="true" />
+            <div className="relative z-10">
+              <NextIntlClientProvider locale={locale} messages={messages}>
+                {children}
+                <FloatMenu />
+              </NextIntlClientProvider>
+            </div>
           </Providers>
           <Toaster />
         </ThemeProvider>
