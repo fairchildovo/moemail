@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react"
 import { signIn } from "next-auth/react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { useToast } from "@/components/ui/use-toast"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -39,6 +39,7 @@ interface FormErrors {
 }
 
 export function LoginForm({ turnstile }: LoginFormProps) {
+  const locale = useLocale()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -49,6 +50,7 @@ export function LoginForm({ turnstile }: LoginFormProps) {
   const [activeTab, setActiveTab] = useState<"login" | "register">("login")
   const { toast } = useToast()
   const t = useTranslations("auth.loginForm")
+  const homePath = `/${locale}`
 
   const turnstileSiteKey = turnstile?.siteKey ?? ""
   const turnstileEnabled = Boolean(turnstile?.enabled && turnstileSiteKey)
@@ -128,7 +130,7 @@ export function LoginForm({ turnstile }: LoginFormProps) {
         return
       }
 
-      window.location.href = "/"
+      window.location.assign(homePath)
     } catch (error) {
       toast({
         title: t("toast.loginFailed"),
@@ -184,7 +186,7 @@ export function LoginForm({ turnstile }: LoginFormProps) {
         return
       }
 
-      window.location.href = "/"
+      window.location.assign(homePath)
     } catch (error) {
       toast({
         title: t("toast.registerFailed"),
@@ -197,17 +199,17 @@ export function LoginForm({ turnstile }: LoginFormProps) {
   }
 
   const handleGithubLogin = () => {
-    signIn("github", { callbackUrl: "/" })
+    signIn("github", { callbackUrl: homePath })
   }
 
   const handleGoogleLogin = () => {
-    signIn("google", { callbackUrl: "/" })
+    signIn("google", { callbackUrl: homePath })
   }
 
   return (
     <Card className="w-[95%] max-w-lg border-2 border-primary/20">
       <CardHeader className="space-y-2">
-        <CardTitle className="text-2xl text-center bg-gradient-to-r from-primary to-black bg-clip-text text-transparent">
+        <CardTitle className="text-2xl text-center bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
           {t("title")}
         </CardTitle>
         <CardDescription className="text-center">
